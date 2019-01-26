@@ -1,0 +1,25 @@
+{
+  "name": "youtube-trending-bot",
+  "version": "0.0.0",
+  "description": "generate text from youtube trending comments",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "ts-node": "^8.0.2",
+    "typescript": "^3.2.4"
+  },
+  "scripts": {
+    "dev": "ts-node ./src/index.ts",
+    "build": "tsc -p ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Weetbix/youtube-trending-bot.git"
+  },
+  "author": "John Hannagan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Weetbix/youtube-trending-bot/issues"
+  },
+  "homepage": "https://github.com/Weetbix/youtube-trending-bot#readme"
+}

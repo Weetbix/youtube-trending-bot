@@ -1,5 +1,8 @@
-import * as makrov from "./makrov/makrov";
+import * as makrov from './makrov/makrov';
 
-console.log(makrov.tokeniseMessage("cats and dogs are here"));
+const messages = makrov.tokeniseMessage('cats dogs');
+console.log(messages);
 
-console.log("oh wow");
+console.log(makrov.groupTokens(messages, 2));
+
+console.log('oh wow');

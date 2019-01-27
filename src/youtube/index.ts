@@ -8,7 +8,7 @@ interface IPageInfo {
 interface IAPIResponse {
     etag: string;
     kind: string;
-    nextPageToken: string;
+    nextPageToken: string | undefined;
     pageInfo: IPageInfo;
 }
 
@@ -58,19 +58,59 @@ export async function fetchTrendingVideos(
     return apiResponse.items.map(item => item.id);
 }
 
-export async function fetchCommentsForVideo(id: string, apiKey: string) {
+/**
+ * Fetches the CommentThreadResponse resource
+ *
+ * @param id        Youtube video ID to fetch for
+ * @param apiKey    Youtube API key to use
+ * @param pageToken The page token to start at. If no page
+ *                  token is provided, the results will start
+ *                  from the beginning.
+ */
+async function fetchThreadForVideo(
+    id: string,
+    apiKey: string,
+    pageToken: string | undefined,
+) {
     const requestPath =
         `${API_ROOT}/commentThreads?` +
         `&videoId=${id}` +
         `&part=snippet` +
         `&maxResults=100` +
-        `&key=${apiKey}`;
+        `&key=${apiKey}` +
+        `${pageToken ? '&pageToken=' + pageToken : ''}`;
 
     const response = await fetch(requestPath);
     const json = await response.json();
-    const apiResponse = json as ICommentThreadAPIResponse;
+    return json as ICommentThreadAPIResponse;
+}
 
-    return apiResponse.items.map(
-        item => item.snippet.topLevelComment.snippet.textDisplay,
-    );
+/**
+ * Iterates through and collects all the comments for the
+ * given video.
+ */
+export async function fetchAllCommentsForVideo(id: string, apiKey: string) {
+    let pageToken;
+    let comments: string[] = [];
+
+    do {
+        // fetch the current comment list
+        const apiResponse: ICommentThreadAPIResponse = await fetchThreadForVideo(
+            id,
+            apiKey,
+            pageToken,
+        );
+        // Add them all to our list
+        comments = [
+            ...comments,
+            ...apiResponse.items.map(
+                item => item.snippet.topLevelComment.snippet.textDisplay,
+            ),
+        ];
+
+        // Take the page token and use it (if it exists) to fetch more comments.
+        pageToken = apiResponse.nextPageToken;
+    } while (pageToken);
+
+    return comments;
 }

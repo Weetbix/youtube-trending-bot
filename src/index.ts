@@ -6,14 +6,18 @@ import * as youtube from './youtube';
 (async () => {
     console.log('YOUTUBE API KEY: ' + process.env.YOUTUBE_API_KEY);
 
-    const trending = await youtube.fetchTrendingVideos(
+    // const trending = await youtube.fetchTrendingVideos(
+    //     process.env.YOUTUBE_API_KEY,
+    // );
+    // const comments = await youtube.fetchCommentsForVideo(
+    //     trending[0],
+    //     process.env.YOUTUBE_API_KEY,
+    // );
+
+    const comments = await youtube.fetchAllCommentsForVideo(
+        'xja0OSPCJ70',
         process.env.YOUTUBE_API_KEY,
     );
-    const comments = await youtube.fetchCommentsForVideo(
-        trending[0],
-        process.env.YOUTUBE_API_KEY,
-    );
-    console.log(trending);
     console.log(markovInternal.splitInputIntoMessages(comments.join(`\n`)));
 
     const dictionary = markov.createDictionaryFromInput(

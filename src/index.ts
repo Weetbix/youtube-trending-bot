@@ -9,7 +9,12 @@ import * as youtube from './youtube';
     const trending = await youtube.fetchTrendingVideos(
         process.env.YOUTUBE_API_KEY,
     );
+    const comments = await youtube.fetchCommentsForVideo(
+        trending[0],
+        process.env.YOUTUBE_API_KEY,
+    );
     console.log(trending);
+    console.log(comments);
 
     const dictionary = markov.createDictionaryFromInput(
         'test text goes here',

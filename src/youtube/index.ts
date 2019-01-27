@@ -57,3 +57,20 @@ export async function fetchTrendingVideos(
 
     return apiResponse.items.map(item => item.id);
 }
+
+export async function fetchCommentsForVideo(id: string, apiKey: string) {
+    const requestPath =
+        `${API_ROOT}/commentThreads?` +
+        `&videoId=${id}` +
+        `&part=snippet` +
+        `&maxResults=100` +
+        `&key=${apiKey}`;
+
+    const response = await fetch(requestPath);
+    const json = await response.json();
+    const apiResponse = json as ICommentThreadAPIResponse;
+
+    return apiResponse.items.map(
+        item => item.snippet.topLevelComment.snippet.textDisplay,
+    );
+}

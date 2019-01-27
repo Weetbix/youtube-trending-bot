@@ -1,9 +1,11 @@
 import {
     ControlTokens,
     createDictionary,
+    createDictionaryFromInput,
     groupTokens,
     splitInputIntoMessages,
     tokeniseSingleMessage,
+    updateDictionaryFromInput,
 } from '../markov';
 
 describe('splitInputIntoMessages', () => {
@@ -104,5 +106,40 @@ describe('createDictionary', () => {
         const groups = groupTokens(tokens, 2);
 
         expect(createDictionary(groups, 2)).toMatchSnapshot();
+    });
+});
+
+describe('createDictionaryFromInput', () => {
+    it('should create the expected dictionary', () => {
+        const input = `
+            A b c d!
+            A b c d
+
+            A b c d d`;
+
+        expect(createDictionaryFromInput(input, 2)).toMatchSnapshot();
+    });
+});
+
+describe('updateDictionaryFromInput', () => {
+    it('should update the dictionary to produce the same result as if they were already joined', () => {
+        const expectedInput = `
+            A b c d!
+            A b c d
+
+            A b c d d
+            a b b`;
+        const expectedDictionary = createDictionaryFromInput(expectedInput, 2);
+
+        const input1 = `
+            A b c d!
+            A b c d`;
+        const input2 = `
+            A b c d d
+            a b b`;
+        const actualDictionary = createDictionaryFromInput(input1, 2);
+        updateDictionaryFromInput(input2, actualDictionary, 2);
+
+        expect(actualDictionary).toEqual(expectedDictionary);
     });
 });

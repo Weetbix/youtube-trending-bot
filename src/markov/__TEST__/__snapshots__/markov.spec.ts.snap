@@ -25,3 +25,28 @@ Object {
   ],
 }
 `;
+
+exports[`createDictionaryFromInput should create the expected dictionary 1`] = `
+Object {
+  "A b": Array [
+    "c",
+    "c",
+    "c",
+  ],
+  "b c": Array [
+    "d!",
+    "d",
+    "d",
+  ],
+  "c d": Array [
+    0,
+    "d",
+  ],
+  "c d!": Array [
+    0,
+  ],
+  "d d": Array [
+    0,
+  ],
+}
+`;

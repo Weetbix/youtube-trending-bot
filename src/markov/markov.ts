@@ -17,6 +17,9 @@ export function tokeniseSingleMessage(message: string) {
     return message.split(' ');
 }
 
+/**
+ * Creates a new markov dictionary from unsanitised input
+ */
 export function createDictionaryFromInput(
     input: string,
     chainLength: number,
@@ -26,6 +29,21 @@ export function createDictionaryFromInput(
     );
 
     return createDictionary(tokenChains, chainLength);
+}
+
+/**
+ * Updates a given markov dictionary with new, unsanitised input
+ */
+export function updateDictionaryFromInput(
+    input: string,
+    map: IMarkovMap,
+    chainLength: number,
+) {
+    const tokenChains = splitInputIntoMessages(input).flatMap(line =>
+        groupTokens(tokeniseSingleMessage(line), chainLength),
+    );
+
+    addToDictionary(map, tokenChains, chainLength);
 }
 
 /**

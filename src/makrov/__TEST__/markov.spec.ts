@@ -1,4 +1,4 @@
-import { ControlTokens, groupTokens, tokeniseMessage } from '../makrov';
+import { ControlTokens, groupTokens, tokeniseMessage } from '../markov';
 
 describe('tokeniseMessage', () => {
     it('should handle a basic sentence', () => {

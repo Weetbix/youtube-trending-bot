@@ -1,8 +1,8 @@
-import * as makrov from './makrov/makrov';
+import * as markov from './markov/markov';
 
-const messages = makrov.tokeniseMessage('cats dogs');
+const messages = markov.tokeniseMessage('cats dogs');
 console.log(messages);
 
-console.log(makrov.groupTokens(messages, 2));
+console.log(markov.groupTokens(messages, 2));
 
 console.log('oh wow');

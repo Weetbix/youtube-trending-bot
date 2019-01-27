@@ -20,6 +20,26 @@ interface IVideosAPIResponse extends IAPIResponse {
     items: IVideoResource[];
 }
 
+interface ICommentsSnippet {
+    textDisplay: string;
+}
+
+interface ICommentsResource {
+    snippet: ICommentsSnippet;
+}
+
+interface ICommentThreadSnippet {
+    topLevelComment: ICommentsResource;
+}
+interface ICommentThreadResource {
+    id: string;
+    snippet: ICommentThreadSnippet;
+}
+
+interface ICommentThreadAPIResponse extends IAPIResponse {
+    items: ICommentThreadResource[];
+}
+
 export async function fetchTrendingVideos(
     apiKey: string,
     regionCode: string = 'AU',

@@ -1,8 +1,8 @@
 export enum ControlTokens {
     END,
 }
-type token = string | ControlTokens;
-type tokenChains = token[][];
+type Token = string | ControlTokens;
+type TokenChains = Token[][];
 
 export function tokeniseMessage(message: string) {
     return message.split(' ');
@@ -19,7 +19,7 @@ export function tokeniseMessage(message: string) {
  *   ['dog', END]
  * ]
  */
-export function groupTokens(tokens: token[], chainLength: number): tokenChains {
+export function groupTokens(tokens: Token[], chainLength: number): TokenChains {
     tokens.push(ControlTokens.END);
 
     return tokens.reduce((acc, current, index) => {
@@ -28,4 +28,28 @@ export function groupTokens(tokens: token[], chainLength: number): tokenChains {
         }
         return acc;
     }, []);
+}
+
+export interface MarkovMap {
+    [key: string]: Token[];
+}
+
+export function createDictionary(
+    tokenChains: TokenChains,
+    chainLength: number,
+): MarkovMap {
+    const map = {};
+    addToDictionary(map, tokenChains, chainLength);
+    return map;
+}
+
+export function addToDictionary(
+    map: MarkovMap,
+    tokenChains: TokenChains,
+    chainLength: number,
+): MarkovMap {
+    tokenChains.forEach((tokenChain: token[]) => {
+        const key = tokenChain.slice(0, chainLength).join(' ');
+        map[key] = tokenChain.slice(chainLength);
+    });
 }

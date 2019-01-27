@@ -1,3 +1,6 @@
+// Allow fetch in node
+import 'isomorphic-fetch';
+
 // Import environment variables from dotenv
 // We keep this in a separate file as there can be issues where the
 // environment is not initialized before a variable is used. See:

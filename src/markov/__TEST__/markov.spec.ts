@@ -2,12 +2,16 @@ import {
     ControlTokens,
     createDictionary,
     groupTokens,
-    tokeniseMessage,
+    tokeniseSingleMessage,
 } from '../markov';
 
 describe('tokeniseMessage', () => {
     it('should handle a basic sentence', () => {
-        expect(tokeniseMessage('this is easy')).toEqual(['this', 'is', 'easy']);
+        expect(tokeniseSingleMessage('this is easy')).toEqual([
+            'this',
+            'is',
+            'easy',
+        ]);
     });
 });
 
@@ -36,7 +40,7 @@ describe('groupTokens', () => {
 describe('createDictionary', () => {
     it('shoud create the expected dictionaries', () => {
         const input = 'cats and dogs';
-        const tokens = tokeniseMessage(input);
+        const tokens = tokeniseSingleMessage(input);
         const groups = groupTokens(tokens, 2);
 
         expect(createDictionary(groups, 2)).toMatchSnapshot();
@@ -44,7 +48,7 @@ describe('createDictionary', () => {
 
     it('shoud create the expected dictionaries when there are more than one occurance of the same word', () => {
         const input = 'cats and cats and dogs';
-        const tokens = tokeniseMessage(input);
+        const tokens = tokeniseSingleMessage(input);
         const groups = groupTokens(tokens, 2);
 
         expect(createDictionary(groups, 2)).toMatchSnapshot();

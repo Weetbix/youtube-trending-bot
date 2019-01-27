@@ -4,8 +4,23 @@ export enum ControlTokens {
 type Token = string | ControlTokens;
 type TokenChains = Token[][];
 
-export function tokeniseMessage(message: string) {
+export function splitInputIntoMessages(input: string) {
+    return input.split(`\n`);
+}
+
+export function tokeniseSingleMessage(message: string) {
     return message.split(' ');
+}
+
+export function createDictionaryFromInput(
+    input: string,
+    chainLength: number,
+): IMarkovMap {
+    const tokenChains = splitInputIntoMessages(input).flatMap(line =>
+        groupTokens(tokeniseSingleMessage(line), chainLength),
+    );
+
+    return createDictionary(tokenChains, chainLength);
 }
 
 /**

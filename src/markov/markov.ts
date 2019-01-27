@@ -34,6 +34,13 @@ export interface IMarkovMap {
     [key: string]: Token[];
 }
 
+/**
+ * Creates the markov dictionary based on a token
+ * chain an expected length.
+ * For now we don't make the values in the dictonary
+ * unique. This will provide a rudimentary frequency
+ * selection.
+ */
 export function createDictionary(
     tokenChains: TokenChains,
     chainLength: number,

@@ -16,7 +16,8 @@
     "scripts": {
         "dev": "ts-node ./src/index.ts",
         "test": "jest",
-        "build": "tsc -p ."
+        "build": "tsc -p .",
+        "watch": "tsc --watch -p ."
     },
     "repository": {
         "type": "git",

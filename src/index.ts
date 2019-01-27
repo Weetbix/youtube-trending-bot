@@ -1,9 +1,9 @@
 import './util/setupEnvironment';
 
+import * as markovInternal from './markov/markov';
 import * as markov from './markov';
 import * as youtube from './youtube';
-
-(async () => {
+c(async () => {
     console.log('YOUTUBE API KEY: ' + process.env.YOUTUBE_API_KEY);
 
     const trending = await youtube.fetchTrendingVideos(
@@ -14,7 +14,7 @@ import * as youtube from './youtube';
         process.env.YOUTUBE_API_KEY,
     );
     console.log(trending);
-    console.log(comments);
+    console.log(markovInternal.splitInputIntoMessages(comments.join(`\n`)));
 
     const dictionary = markov.createDictionaryFromInput(
         'test text goes here',

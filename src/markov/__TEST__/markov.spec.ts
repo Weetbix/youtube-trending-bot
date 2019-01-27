@@ -87,6 +87,13 @@ But I prefer dogs.`;
 
         expect(splitInputIntoMessages(input)).toEqual(expected);
     });
+
+    it('should unescape HTML entities back to plain text', () => {
+        const input = 'it&#39;s it&#39;s';
+        const expected = [`it's it's`];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
 });
 
 describe('tokeniseMessage', () => {

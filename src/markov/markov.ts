@@ -1,3 +1,5 @@
+import { unescape } from 'lodash';
+
 export enum ControlTokens {
     END,
 }
@@ -5,7 +7,7 @@ type Token = string | ControlTokens;
 type TokenChains = Token[][];
 
 export function splitInputIntoMessages(input: string) {
-    return input
+    return unescape(input)
         .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
         .replace(/<a href=".*?">/g, ' ') //String anchor links
         .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags
@@ -76,7 +78,7 @@ export interface IMarkovMap {
 }
 
 /**
- * Creates the markov dictionary based on a token
+ * Creates tunescapehe markov dictionary based on a token
  * chain an expected length.
  * For now we don't make the values in the dictonary
  * unique. This will provide a rudimentary frequency

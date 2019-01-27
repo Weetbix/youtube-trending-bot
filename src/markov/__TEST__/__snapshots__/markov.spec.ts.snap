@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createDictionary shoud create the expected dictionaries 1`] = `
+Object {
+  "and dogs": Array [
+    0,
+  ],
+  "cats and": Array [
+    "dogs",
+  ],
+}
+`;
+
+exports[`createDictionary shoud create the expected dictionaries when there are more than one occurance of the same word 1`] = `
+Object {
+  "and cats": Array [
+    "and",
+  ],
+  "and dogs": Array [
+    0,
+  ],
+  "cats and": Array [
+    "cats",
+    "dogs",
+  ],
+}
+`;

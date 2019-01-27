@@ -30,26 +30,29 @@ export function groupTokens(tokens: Token[], chainLength: number): TokenChains {
     }, []);
 }
 
-export interface MarkovMap {
+export interface IMarkovMap {
     [key: string]: Token[];
 }
 
 export function createDictionary(
     tokenChains: TokenChains,
     chainLength: number,
-): MarkovMap {
+): IMarkovMap {
     const map = {};
     addToDictionary(map, tokenChains, chainLength);
     return map;
 }
 
 export function addToDictionary(
-    map: MarkovMap,
+    map: IMarkovMap,
     tokenChains: TokenChains,
     chainLength: number,
-): MarkovMap {
-    tokenChains.forEach((tokenChain: token[]) => {
+) {
+    tokenChains.forEach((tokenChain: Token[]) => {
+        // The key is the first 'chain length' worth of tokens
         const key = tokenChain.slice(0, chainLength).join(' ');
-        map[key] = tokenChain.slice(chainLength);
+
+        const currentValue = map[key] || [];
+        map[key] = [...currentValue, ...tokenChain.slice(chainLength)];
     });
 }

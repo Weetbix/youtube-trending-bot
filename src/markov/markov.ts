@@ -83,3 +83,30 @@ export function addToDictionary(
         map[key] = [...currentValue, ...tokenChain.slice(chainLength)];
     });
 }
+
+function sample<T>(array: T[]) {
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+export function generateMessage(map: IMarkovMap): string {
+    const MAX_WORD_LENGTH = 50;
+
+    // start off with a random seed from the array keys
+    let key = sample(Object.keys(map));
+    let message = key;
+
+    for (let i = 0; i < MAX_WORD_LENGTH; i++) {
+        const nextWord = sample(map[key]);
+        if (nextWord === ControlTokens.END) {
+            break;
+        }
+
+        // Take all of the tokens after the first one to
+        // create our new key
+        const remainingWordsInKey = key.substring(key.indexOf(' ') + 1);
+        key = remainingWordsInKey + ' ' + nextWord;
+        message += ' ' + nextWord;
+    }
+
+    return message;
+}

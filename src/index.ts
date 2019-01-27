@@ -1,8 +1,16 @@
 import * as markov from './markov/markov';
 
-const messages = markov.tokeniseSingleMessage('cats dogs');
-console.log(messages);
+const dictionary = markov.createDictionaryFromInput('test text goes here', 2);
 
-console.log(markov.groupTokens(messages, 2));
+console.log(markov.generateMessage(dictionary));
+console.log('');
+console.log(markov.generateMessage(dictionary));
+console.log('');
+console.log(markov.generateMessage(dictionary));
+console.log('');
+console.log(markov.generateMessage(dictionary));
+console.log('');
+
+console.log(`Keys: ${Object.keys(dictionary).length}`);
 
 console.log('oh wow');

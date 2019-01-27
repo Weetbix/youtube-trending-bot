@@ -4,8 +4,7 @@
         "sourceMap": true,
         "noImplicitAny": true,
         "module": "commonjs",
+        "lib": ["esnext"]
     },
-    "include": [
-        "./src/**/*"
-    ]
+    "include": ["./src/**/*"]
 }

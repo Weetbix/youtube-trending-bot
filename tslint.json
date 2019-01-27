@@ -4,7 +4,8 @@
     "jsRules": {},
     "rules": {
         "no-console": [false],
-        "quotemark": [false]
+        "quotemark": [false],
+        "arrow-parens": [false]
     },
     "rulesDirectory": []
 }

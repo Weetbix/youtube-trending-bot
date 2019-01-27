@@ -57,6 +57,36 @@ But I prefer dogs.`;
             'Oh wow, so cool!',
         ]);
     });
+
+    it('should remove youtube time anchor tags', () => {
+        const input =
+            '<a href="https://www.youtube.com/watch?v=zbZzeceXKKk&amp;t=20m16s">20:16</a> test';
+        const expected = ['20:16 test'];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
+
+    it('should remove time anchors even if there are multiples', () => {
+        const input =
+            '<a href="https://www.youtube.com/watch?v=zbZzeceXKKk&amp;t=20m16s">20:16</a>test<a href="https://www.youtube.com/watch?v=zbZzeceXKKk&amp;t=20m16s">20:16</a>';
+        const expected = ['20:16 test 20:16'];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
+
+    it('should strip bold tags', () => {
+        const input = '<b>oh wow</b>more<b>things</b>';
+        const expected = ['oh wow more things'];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
+
+    it('should split on br tags as if they were new lines', () => {
+        const input = 'line 1<br /><br /><br />line 2';
+        const expected = ['line 1', 'line 2'];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
 });
 
 describe('tokeniseMessage', () => {

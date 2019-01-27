@@ -9,7 +9,7 @@ type TokenChains = Token[][];
 export function splitInputIntoMessages(input: string) {
     return unescape(input)
         .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
-        .replace(/<a href=".*?">/g, ' ') //String anchor links
+        .replace(/<a href=".*?">/g, ' ') // String anchor links
         .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags
         .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
         .replace('  ', ' ') // Remove duplicate spaces

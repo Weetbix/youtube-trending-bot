@@ -68,6 +68,7 @@ But I prefer dogs.`;
 
     it('should remove time anchors even if there are multiples', () => {
         const input =
+            // tslint:disable-next-line:max-line-length
             '<a href="https://www.youtube.com/watch?v=zbZzeceXKKk&amp;t=20m16s">20:16</a>test<a href="https://www.youtube.com/watch?v=zbZzeceXKKk&amp;t=20m16s">20:16</a>';
         const expected = ['20:16 test 20:16'];
 

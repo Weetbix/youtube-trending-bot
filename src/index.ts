@@ -1,9 +1,9 @@
 import './util/setupEnvironment';
 
-import * as markovInternal from './markov/markov';
 import * as markov from './markov';
+import * as markovInternal from './markov/markov';
 import * as youtube from './youtube';
-c(async () => {
+(async () => {
     console.log('YOUTUBE API KEY: ' + process.env.YOUTUBE_API_KEY);
 
     const trending = await youtube.fetchTrendingVideos(

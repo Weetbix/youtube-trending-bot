@@ -1,4 +1,4 @@
-import * as markov from './markov/markov';
+import * as markov from './markov';
 
 const dictionary = markov.createDictionaryFromInput('test text goes here', 2);
 

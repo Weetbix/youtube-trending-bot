@@ -4,7 +4,7 @@ export enum ControlTokens {
 type token = string | ControlTokens;
 type tokenChains = token[][];
 
-export function tokeniseMessage(message: string): token[] {
+export function tokeniseMessage(message: string) {
     return message.split(' ');
 }
 

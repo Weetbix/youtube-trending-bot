@@ -1,4 +1,4 @@
-import { tokeniseMessage, groupTokens, ControlTokens } from '../makrov';
+import { ControlTokens, groupTokens, tokeniseMessage } from '../makrov';
 
 describe('tokeniseMessage', () => {
     it('should handle a basic sentence', () => {
@@ -9,6 +9,7 @@ describe('tokeniseMessage', () => {
 describe('groupTokens', () => {
     it('should not return anything when there arent enough tokens', () => {
         expect(groupTokens(['cat'], 2)).toEqual([]);
+        expect(groupTokens([], 2)).toEqual([]);
     });
 
     it('should return correct grouping when the length matches the chain length', () => {

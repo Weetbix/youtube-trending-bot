@@ -5,7 +5,12 @@ type Token = string | ControlTokens;
 type TokenChains = Token[][];
 
 export function splitInputIntoMessages(input: string) {
-    return input.split(`\n`);
+    return input
+        .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
+        .replace('  ', ' ') // Remove duplicate spaces
+        .split(/[\n\.]/) // Split based on new line or full stops
+        .map(line => line.trim()) // Remove any head/tail whitespace
+        .filter(line => line.length > 0); // Remove blanks
 }
 
 export function tokeniseSingleMessage(message: string) {

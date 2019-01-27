@@ -2,8 +2,60 @@ import {
     ControlTokens,
     createDictionary,
     groupTokens,
+    splitInputIntoMessages,
     tokeniseSingleMessage,
 } from '../markov';
+
+describe('splitInputIntoMessages', () => {
+    it('should split based on new lines', () => {
+        const input = `
+message 1
+message 2
+message 3`;
+
+        expect(splitInputIntoMessages(input)).toEqual([
+            'message 1',
+            'message 2',
+            'message 3',
+        ]);
+    });
+
+    it('should not include multiple new lines', () => {
+        const input = `1\n\n2\n\n\n3`;
+        expect(splitInputIntoMessages(input)).toEqual(['1', '2', '3']);
+    });
+
+    it('should not include lines with only whitespace', () => {
+        const input = `1\n\t\n2`;
+        expect(splitInputIntoMessages(input)).toEqual(['1', '2']);
+    });
+
+    it('should split based on full stops, and remove them', () => {
+        const input = `
+I had a cat.
+It was nice.
+But I prefer dogs.`;
+
+        expect(splitInputIntoMessages(input)).toEqual([
+            'I had a cat',
+            'It was nice',
+            'But I prefer dogs',
+        ]);
+    });
+
+    it('should split between elipsis and ignore them', () => {
+        expect(splitInputIntoMessages('Oh wow... so cool')).toEqual([
+            'Oh wow',
+            'so cool',
+        ]);
+    });
+
+    it('should include punctuation in line', () => {
+        expect(splitInputIntoMessages('Oh wow, so cool!')).toEqual([
+            'Oh wow, so cool!',
+        ]);
+    });
+});
 
 describe('tokeniseMessage', () => {
     it('should handle a basic sentence', () => {

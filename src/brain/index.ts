@@ -2,8 +2,18 @@ import '../util/setupEnvironment';
 import api from './api';
 import YoutubeMarkov from './YoutubeMarkov';
 
-const markov = new YoutubeMarkov(process.env.YOUTUBE_API_KEY);
+(async () => {
+    const MARKOV_FILEPATH = './data/data.json';
 
-api(markov);
+    const markov = new YoutubeMarkov(
+        process.env.YOUTUBE_API_KEY,
+        MARKOV_FILEPATH,
+    );
+    await markov.initialise();
 
-markov.updateMapFromYoutube();
+    api(markov);
+
+    if (markov.getKeyCount() === 0) {
+        markov.updateMapFromYoutube();
+    }
+})();

@@ -15,8 +15,14 @@ import api from './api';
 
 const CHAIN_LENGTH = 2;
 
+interface ISerializedStructure {
+    map: IMarkovMap;
+    harvestedYoutubeIDs: string[];
+}
+
 export default class YoutubeMarkov {
     private map: IMarkovMap;
+    private harvestedYoutubeIDs: string[] = [];
 
     /**
      * @param pathToFile    The path to persist the map to on disk
@@ -52,6 +58,8 @@ export default class YoutubeMarkov {
         updateDictionaryFromInput(comments.join('\n'), this.map, CHAIN_LENGTH);
         log(`Dictionary now contains ${Object.keys(this.map).length} keys`);
 
+        this.harvestedYoutubeIDs.push(trending[0]);
+
         this.saveMapToStorage();
     }
 
@@ -63,9 +71,13 @@ export default class YoutubeMarkov {
         const readFile = util.promisify(fs.readFile);
         const json = await readFile(this.pathToFile, { encoding: 'utf8' });
 
-        this.map = JSON.parse(json) as IMarkovMap;
+        const data = JSON.parse(json) as ISerializedStructure;
+        this.map = data.map;
+        this.harvestedYoutubeIDs = data.harvestedYoutubeIDs;
         log(
-            `markov file loaded form disk with [${Object.keys(this.map)}] keys`,
+            `markov file loaded from disk with [${
+                Object.keys(this.map).length
+            }] keys`,
         );
     }
 
@@ -76,8 +88,13 @@ export default class YoutubeMarkov {
             fs.mkdirSync(dir);
         }
 
+        const data: ISerializedStructure = {
+            harvestedYoutubeIDs: this.harvestedYoutubeIDs,
+            map: this.map,
+        };
+
         const writeFile = util.promisify(fs.writeFile);
-        await writeFile(this.pathToFile, JSON.stringify(this.map));
+        await writeFile(this.pathToFile, JSON.stringify(data));
         log(`Saved markov file to disk at ${this.pathToFile}`);
     }
 }

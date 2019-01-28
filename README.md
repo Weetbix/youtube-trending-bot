@@ -9,4 +9,6 @@ Environment variables can either be set in the usual way, or they can be added t
 | Key             | Description                                                    |
 | --------------- | -------------------------------------------------------------- |
 | YOUTUBE_API_KEY | The youtube API key to use for searching and fetching comments |
+| SLACK_API_KEY   | The slack bot OAuth token                                      |
+| SLACK_BOT_NAME  | The name of your bot in slack                                  |
 | DEBUG           | You should set this to `*` to see debug log output             |

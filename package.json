@@ -4,6 +4,7 @@
     "description": "generate text from youtube trending comments",
     "main": "index.js",
     "dependencies": {
+        "@slack/client": "^4.8.0",
         "debug": "^4.1.1",
         "dotenv": "^6.2.0",
         "express": "^4.16.4",
@@ -25,6 +26,7 @@
     },
     "scripts": {
         "brain:dev": "ts-node ./src/brain/index.ts",
+        "bot:dev": "ts-node ./src/slackbot/index.ts",
         "dev": "ts-node ./src/index.ts",
         "test": "jest",
         "build": "tsc -p .",

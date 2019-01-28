@@ -18,6 +18,17 @@ export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
         });
     });
 
+    app.get('/stats', (req, res, next) => {
+        res.json({
+            KVRatio: markov.getKeyValueRatio(),
+            memoryUsage: process.memoryUsage().rss,
+            sentencesLearned: markov.getSentencesLearned(),
+            sizeOnDisk: markov.getSizeOnDisk(),
+            totalKeys: markov.getKeyCount(),
+            videosProcessed: markov.getVideosProcessed(),
+        });
+    });
+
     app.listen(port);
 
     return app;

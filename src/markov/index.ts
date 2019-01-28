@@ -5,4 +5,5 @@ export {
     updateDictionaryFromInput,
     generateMessage,
     IMarkovMap,
+    ControlTokens,
 } from './markov';

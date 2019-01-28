@@ -5,6 +5,7 @@ import util = require('util');
 const log = debug('brain');
 
 import {
+    ControlTokens,
     createDictionaryFromInput,
     generateMessage,
     IMarkovMap,
@@ -103,6 +104,31 @@ export default class YoutubeMarkov {
             0,
         );
         return totalValues / this.getKeyCount();
+    }
+
+    /**
+     * Returns how many sentences have been processed. Given that
+     * every sentence ends with the END token, and duplicate tokens
+     * are kept, we can just count the number of END tokens.
+     */
+    public getSentencesLearned() {
+        return Object.values(this.map)
+            .flat()
+            .filter(token => token === ControlTokens.END).length;
+    }
+
+    public getVideosProcessed() {
+        return this.harvestedYoutubeIDs.size;
+    }
+
+    /**
+     * returns the size on disk in bytes
+     */
+    public getSizeOnDisk() {
+        if (fs.existsSync(this.pathToFile)) {
+            return fs.statSync(this.pathToFile).size;
+        }
+        return 0;
     }
 
     private async loadMapFromStorage() {

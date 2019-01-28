@@ -1,3 +1,6 @@
+import debug = require('debug');
+const log = debug('youtubeAPI');
+
 const API_ROOT = `https://www.googleapis.com/youtube/v3`;
 
 interface IPageInfo {
@@ -88,13 +91,21 @@ async function fetchThreadForVideo(
 /**
  * Iterates through and collects all the comments for the
  * given video.
+ *
+ * @param limit     If given, will stop fetching after the comments
+ *                  have at least reached this many.
  */
-export async function fetchAllCommentsForVideo(id: string, apiKey: string) {
+export async function fetchAllCommentsForVideo(
+    id: string,
+    apiKey: string,
+    limit: number = 0,
+) {
     let pageToken;
     let comments: string[] = [];
 
     do {
         // fetch the current comment list
+        log(`Fetching youtube comments [currently: ${comments.length}]`);
         const apiResponse: ICommentThreadAPIResponse = await fetchThreadForVideo(
             id,
             apiKey,
@@ -110,7 +121,10 @@ export async function fetchAllCommentsForVideo(id: string, apiKey: string) {
 
         // Take the page token and use it (if it exists) to fetch more comments.
         pageToken = apiResponse.nextPageToken;
-    } while (pageToken);
+
+        // Keep looping while we have next page tokens, or until
+        // we hit the comment count limit
+    } while (pageToken && (limit === 0 || comments.length < limit));
 
     return comments;
 }

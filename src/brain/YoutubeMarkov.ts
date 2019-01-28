@@ -32,6 +32,7 @@ export default class YoutubeMarkov {
         const comments = await fetchAllCommentsForVideo(
             trending[0],
             this.apiKey,
+            20,
         );
         log(`Fetched ${comments.length} comments`);
 

@@ -9,3 +9,4 @@ Environment variables can either be set in the usual way, or they can be added t
 | Key             | Description                                                    |
 | --------------- | -------------------------------------------------------------- |
 | YOUTUBE_API_KEY | The youtube API key to use for searching and fetching comments |
+| DEBUG           | You should set this to `*` to see debug log output             |

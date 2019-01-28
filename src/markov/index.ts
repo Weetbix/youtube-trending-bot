@@ -4,4 +4,5 @@ export {
     createDictionaryFromInput,
     updateDictionaryFromInput,
     generateMessage,
+    IMarkovMap,
 } from './markov';

@@ -21,6 +21,14 @@
             "program": "${workspaceFolder}/dist/index.js",
             "preLaunchTask": "tsc: build - tsconfig.json",
             "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "brain",
+            "program": "${workspaceFolder}/dist/brain/index.js",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"]
         }
     ]
 }

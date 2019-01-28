@@ -111,7 +111,7 @@ export default class YoutubeMarkov {
      * every sentence ends with the END token, and duplicate tokens
      * are kept, we can just count the number of END tokens.
      */
-    public getSentencesLearned() {
+    public getSentencesProcessed() {
         return Object.values(this.map)
             .flat()
             .filter(token => token === ControlTokens.END).length;

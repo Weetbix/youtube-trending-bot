@@ -22,7 +22,7 @@ export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
         res.json({
             KVRatio: markov.getKeyValueRatio(),
             memoryUsage: process.memoryUsage().rss,
-            sentencesLearned: markov.getSentencesLearned(),
+            sentencesProcessed: markov.getSentencesProcessed(),
             sizeOnDisk: markov.getSizeOnDisk(),
             totalKeys: markov.getKeyCount(),
             videosProcessed: markov.getVideosProcessed(),

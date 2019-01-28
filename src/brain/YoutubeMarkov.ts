@@ -11,7 +11,18 @@ import {
     updateDictionaryFromInput,
 } from '../markov';
 import { fetchAllCommentsForVideo, fetchTrendingVideos } from '../youtube';
-import api from './api';
+
+// Some constants that will help us limit how many comments we
+// are fetching per day, so we don't hit the quota limit
+const QUOTA_COST_PER_FETCH = 4; // 1 per video listing, 3 per comment fetching
+const MAX_QUOTA_PER_DAY = 10000;
+const COMMENTS_PER_BATCH = 100;
+const MAX_COMMENTS_PER_DAY =
+    (MAX_QUOTA_PER_DAY / QUOTA_COST_PER_FETCH) * COMMENTS_PER_BATCH;
+
+const MAX_COMMENTS_PER_VIDEO = 100;
+
+const MAX_VIDEOS_PER_UPDATE = 5;
 
 const CHAIN_LENGTH = 2;
 
@@ -22,7 +33,7 @@ interface ISerializedStructure {
 
 export default class YoutubeMarkov {
     private map: IMarkovMap;
-    private harvestedYoutubeIDs: string[] = [];
+    private harvestedYoutubeIDs: Set<string> = new Set<string>();
 
     /**
      * @param pathToFile    The path to persist the map to on disk
@@ -45,26 +56,53 @@ export default class YoutubeMarkov {
     public async updateMapFromYoutube() {
         log('Updating map from youtube');
 
-        const trending = await fetchTrendingVideos(this.apiKey);
-        log(`Fetching comments from ${trending[0]}`);
+        // Get the latest trending videos, not including ones we
+        // have already processed, and limit it to MAX_VIDEOS_PER_UPDATE
+        const trending = (await fetchTrendingVideos(this.apiKey))
+            .filter(videoID => !this.harvestedYoutubeIDs.has(videoID))
+            .slice(0, MAX_VIDEOS_PER_UPDATE);
 
-        const comments = await fetchAllCommentsForVideo(
-            trending[0],
-            this.apiKey,
-            20,
-        );
-        log(`Fetched ${comments.length} comments`);
+        // Iterate through the trending videos, for each one fetch
+        // our predetermined amount of comments and add them to our
+        // dictionary.
+        let commentsFetched = 0;
+        for (const videoId of trending) {
+            log(`Fetching comments from ${videoId}`);
+            const comments = await fetchAllCommentsForVideo(
+                videoId,
+                this.apiKey,
+                MAX_COMMENTS_PER_VIDEO,
+            );
+            commentsFetched += comments.length;
+            log(`Fetched ${comments.length} comments`);
 
-        updateDictionaryFromInput(comments.join('\n'), this.map, CHAIN_LENGTH);
+            updateDictionaryFromInput(
+                comments.join('\n'),
+                this.map,
+                CHAIN_LENGTH,
+            );
+            this.harvestedYoutubeIDs.add(videoId);
+
+            // Try not to go over our quota in the next fetch
+            if (commentsFetched + MAX_COMMENTS_PER_VIDEO > MAX_COMMENTS_PER_DAY)
+                break;
+        }
+
         log(`Dictionary now contains ${Object.keys(this.map).length} keys`);
-
-        this.harvestedYoutubeIDs.push(trending[0]);
-
+        log(`Dictionary KV ratio is now ${this.getKeyValueRatio()}`);
         this.saveMapToStorage();
     }
 
     public getKeyCount() {
         return Object.keys(this.map).length;
+    }
+
+    public getKeyValueRatio() {
+        const totalValues = Object.values(this.map).reduce(
+            (total, tokenArray) => (total += tokenArray.length),
+            0,
+        );
+        return totalValues / this.getKeyCount();
     }
 
     private async loadMapFromStorage() {
@@ -73,7 +111,7 @@ export default class YoutubeMarkov {
 
         const data = JSON.parse(json) as ISerializedStructure;
         this.map = data.map;
-        this.harvestedYoutubeIDs = data.harvestedYoutubeIDs;
+        this.harvestedYoutubeIDs = new Set(data.harvestedYoutubeIDs);
         log(
             `markov file loaded from disk with [${
                 Object.keys(this.map).length
@@ -89,7 +127,7 @@ export default class YoutubeMarkov {
         }
 
         const data: ISerializedStructure = {
-            harvestedYoutubeIDs: this.harvestedYoutubeIDs,
+            harvestedYoutubeIDs: Array.from(this.harvestedYoutubeIDs),
             map: this.map,
         };
 

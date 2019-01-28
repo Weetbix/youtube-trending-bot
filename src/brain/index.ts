@@ -13,7 +13,7 @@ import YoutubeMarkov from './YoutubeMarkov';
 
     api(markov);
 
-    if (markov.getKeyCount() === 0) {
-        markov.updateMapFromYoutube();
-    }
+    // if (markov.getKeyCount() === 0) {
+    markov.updateMapFromYoutube();
+    // }
 })();

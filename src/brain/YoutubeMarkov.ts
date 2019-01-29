@@ -37,9 +37,15 @@ export default class YoutubeMarkov {
     private harvestedYoutubeIDs: Set<string> = new Set<string>();
 
     /**
-     * @param pathToFile    The path to persist the map to on disk
+     * @param pathToMapStorage    The path to persist the map to on disk
+     * @param pathToCommentStorage  The path to persist all processed input to
+     *                              useful for rebuilding the data or changing chainlength etc
      */
-    constructor(readonly apiKey: string, readonly pathToFile: string) {}
+    constructor(
+        readonly apiKey: string,
+        readonly pathToMapStorage: string,
+        readonly pathToCommentStorage: string,
+    ) {}
 
     public async initialise() {
         try {
@@ -83,6 +89,7 @@ export default class YoutubeMarkov {
                 CHAIN_LENGTH,
             );
             this.harvestedYoutubeIDs.add(videoId);
+            this.saveCommentsToStorage(comments);
 
             // Try not to go over our quota in the next fetch
             if (commentsFetched + MAX_COMMENTS_PER_VIDEO > MAX_COMMENTS_PER_DAY)
@@ -125,15 +132,17 @@ export default class YoutubeMarkov {
      * returns the size on disk in bytes
      */
     public getSizeOnDisk() {
-        if (fs.existsSync(this.pathToFile)) {
-            return fs.statSync(this.pathToFile).size;
+        if (fs.existsSync(this.pathToMapStorage)) {
+            return fs.statSync(this.pathToMapStorage).size;
         }
         return 0;
     }
 
     private async loadMapFromStorage() {
         const readFile = util.promisify(fs.readFile);
-        const json = await readFile(this.pathToFile, { encoding: 'utf8' });
+        const json = await readFile(this.pathToMapStorage, {
+            encoding: 'utf8',
+        });
 
         const data = JSON.parse(json) as ISerializedStructure;
         this.map = data.map;
@@ -147,7 +156,7 @@ export default class YoutubeMarkov {
 
     private async saveMapToStorage() {
         // Ensure the folder exists before we create it
-        const dir = path.dirname(this.pathToFile);
+        const dir = path.dirname(this.pathToMapStorage);
         if (!fs.existsSync(dir)) {
             fs.mkdirSync(dir);
         }
@@ -158,7 +167,17 @@ export default class YoutubeMarkov {
         };
 
         const writeFile = util.promisify(fs.writeFile);
-        await writeFile(this.pathToFile, JSON.stringify(data));
-        log(`Saved markov file to disk at ${this.pathToFile}`);
+        await writeFile(this.pathToMapStorage, JSON.stringify(data));
+        log(`Saved markov file to disk at ${this.pathToMapStorage}`);
+    }
+
+    private async saveCommentsToStorage(comments: string[]) {
+        const dir = path.dirname(this.pathToCommentStorage);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+
+        const appendFile = util.promisify(fs.appendFile);
+        await appendFile(this.pathToCommentStorage, comments.join('\n'));
     }
 }

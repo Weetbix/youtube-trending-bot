@@ -75,7 +75,8 @@ async function handleStatsMessage(client: RTMClient, message: ISlackMessage) {
         `I have *${json.totalKeys} keys* in my head, and on ` +
         `average these have *${json.KVRatio.toFixed(2)} values* each.\n` +
         `I'm using *${bytesToMiB(json.sizeOnDisk)}s of disk* and ` +
-        `*${bytesToMiB(json.memoryUsage)}s of RAM.*`;
+        `*${bytesToMiB(json.memoryUsage)}s of RAM.*\n\n` +
+        `I'll look at some more YouTube videos *${json.timeOfNextUpdate}*.`;
 
     client.sendMessage(stats, message.channel);
 }

@@ -1,4 +1,5 @@
 import express = require('express');
+import moment = require('moment');
 import YoutubeMarkov from './YoutubeMarkov';
 
 const DEFAULT_PORT = 8080;
@@ -13,10 +14,19 @@ export interface IStatsResponse {
     sentencesProcessed: number;
     sizeOnDisk: number;
     totalKeys: number;
+    timeOfNextUpdate: string;
     videosProcessed: number;
 }
 
-export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
+interface IJob {
+    nextInvocation(): Date;
+}
+
+export default function(
+    markov: YoutubeMarkov,
+    updateJob: IJob,
+    port: number = DEFAULT_PORT,
+) {
     const app = express();
 
     app.get(`/status`, (req, res, next) => {
@@ -37,6 +47,9 @@ export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
             memoryUsage: process.memoryUsage().rss,
             sentencesProcessed: markov.getSentencesProcessed(),
             sizeOnDisk: markov.getSizeOnDisk(),
+            timeOfNextUpdate: moment(
+                updateJob.nextInvocation().toISOString(),
+            ).fromNow(),
             totalKeys: markov.getKeyCount(),
             videosProcessed: markov.getVideosProcessed(),
         } as IStatsResponse);

@@ -101,6 +101,13 @@ but i prefer dogs.`;
         expect(splitInputIntoMessages(input)).toEqual(expected);
     });
 
+    it('should strip italics tags', () => {
+        const input = '<i>oh wow</i>more<i>things</i>';
+        const expected = ['oh wow more things'];
+
+        expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
+
     it('should split on br tags as if they were new lines', () => {
         const input = 'line 1<br /><br /><br />line 2';
         const expected = ['line 1', 'line 2'];

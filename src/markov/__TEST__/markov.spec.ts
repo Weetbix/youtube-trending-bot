@@ -32,6 +32,12 @@ message 3`;
         expect(splitInputIntoMessages(input)).toEqual(['1', '2']);
     });
 
+    it('should replace long stretches of white space with a space', () => {
+        expect(splitInputIntoMessages('   1     2        3 4  5   ')).toEqual([
+            '1 2 3 4 5',
+        ]);
+    });
+
     it('should split based on full stops, and remove them', () => {
         const input = `
 I had a cat.

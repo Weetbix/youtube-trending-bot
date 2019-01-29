@@ -7,16 +7,19 @@ type Token = string | ControlTokens;
 type TokenChains = Token[][];
 
 export function splitInputIntoMessages(input: string) {
-    return unescape(input)
-        .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
-        .replace(/<a href=".*?">/g, ' ') // String anchor links
-        .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags
-        .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
-        .replace(/ {2,}/g, ' ') // Remove duplicate spaces
-        .replace(/["']/g, '') // Remove quotes
-        .split(/[\n\.]/) // Split based on new line or full stops
-        .map(line => line.trim()) // Remove any head/tail whitespace
-        .filter(line => line.length > 0); // Remove blanks
+    return (
+        unescape(input)
+            .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
+            .replace(/<a href=".*?">/g, ' ') // String anchor links
+            .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags
+            .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
+            .replace(/ {2,}/g, ' ') // Remove duplicate spaces
+            .replace(/["']/g, '') // Remove quotes
+            .split(/[\n\.]/) // Split based on new line or full stops
+            .map(line => line.trim()) // Remove any head/tail whitespace
+            // Remove blank lines and lines without any alpha characters
+            .filter(line => line.length > 0 && /[a-zA-Z]/g.test(line))
+    );
 }
 
 export function tokeniseSingleMessage(message: string) {

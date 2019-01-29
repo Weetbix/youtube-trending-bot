@@ -23,19 +23,21 @@ message 3`;
     });
 
     it('should not include multiple new lines', () => {
-        const input = `1\n\n2\n\n\n3`;
-        expect(splitInputIntoMessages(input)).toEqual(['1', '2', '3']);
+        const input = `cat\n\ndog\n\n\nmouse`;
+        expect(splitInputIntoMessages(input)).toEqual(['cat', 'dog', 'mouse']);
     });
 
     it('should not include lines with only whitespace', () => {
-        const input = `1\n\t\n2`;
-        expect(splitInputIntoMessages(input)).toEqual(['1', '2']);
+        const input = `cat\n\t\ndog`;
+        expect(splitInputIntoMessages(input)).toEqual(['cat', 'dog']);
     });
 
     it('should replace long stretches of white space with a space', () => {
-        expect(splitInputIntoMessages('   1     2        3 4  5   ')).toEqual([
-            '1 2 3 4 5',
-        ]);
+        expect(
+            splitInputIntoMessages(
+                '   cat     dog        mouse giraffe  scot   ',
+            ),
+        ).toEqual(['cat dog mouse giraffe scot']);
     });
 
     it('should split based on full stops, and remove them', () => {
@@ -106,6 +108,11 @@ But I prefer dogs.`;
         const expected = [`m&m`];
 
         expect(splitInputIntoMessages(input)).toEqual(expected);
+    });
+
+    it('should ignore lines that dont have any alpha characters', () => {
+        const input = `here\n10:10\nthere`;
+        expect(splitInputIntoMessages(input)).toEqual(['here', 'there']);
     });
 });
 

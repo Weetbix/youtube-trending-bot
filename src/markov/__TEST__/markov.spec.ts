@@ -119,6 +119,24 @@ but i prefer dogs.`;
         const input = `here\n10:10\nthere`;
         expect(splitInputIntoMessages(input)).toEqual(['here', 'there']);
     });
+
+    it('should remove character repetitions more than 2 in a row', () => {
+        const input = `woo wooo woooo amaaaaaaaazing`;
+        const expected = `woo woo woo amaazing`;
+        expect(splitInputIntoMessages(input)).toEqual([expected]);
+    });
+
+    it('should not remove the character repeitions if they are numbers', () => {
+        const input = `i own 500000 houses`;
+        expect(splitInputIntoMessages(input)).toEqual([input]);
+    });
+
+    it('should remove all repetitions except one if the characters are non-alpha and non-numerical', () => {
+        // For when people do things like 'Omg!!!!!!!!!!!!!!
+        const input = `omg!!!!!! so expensive $$$$$$ yeah`;
+        const expected = `omg! so expensive $ yeah`;
+        expect(splitInputIntoMessages(input)).toEqual([expected]);
+    });
 });
 
 describe('tokeniseMessage', () => {

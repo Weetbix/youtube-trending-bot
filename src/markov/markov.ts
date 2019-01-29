@@ -10,6 +10,10 @@ export function splitInputIntoMessages(input: string) {
     return (
         unescape(input)
             .toLowerCase()
+            // Remove any character repetition over 2 times. ie aaaaa => aa
+            .replace(/([^0-9])(\1{1,1})(\1{1,})/g, '$1$2')
+            // Remove any non-alpha or non-numerical repetitions over 1 times
+            .replace(/([^a-zA-Z0-9])\1{1,}/g, '$1')
             .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
             .replace(/<a href=".*?">/g, ' ') // String anchor links
             .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags

@@ -27,33 +27,29 @@ const MAX_VIDEOS_PER_UPDATE = 50;
 
 const CHAIN_LENGTH = 3;
 
-interface ISerializedStructure {
-    map: IMarkovMap;
-    harvestedYoutubeIDs: string[];
-}
+const writeFile = util.promisify(fs.writeFile);
+const readFile = util.promisify(fs.readFile);
+const appendFile = util.promisify(fs.appendFile);
 
 export default class YoutubeMarkov {
     private map: IMarkovMap;
     private harvestedYoutubeIDs: Set<string> = new Set<string>();
 
     /**
-     * @param pathToMapStorage    The path to persist the map to on disk
-     * @param pathToCommentStorage  The path to persist all processed input to
-     *                              useful for rebuilding the data or changing chainlength etc
+     * @param pathToMapStorage              The path to persist the map to on disk
+     * @param pathToVideosProcessedStorage  The path where we store the list of videos we've already processed
+     * @param pathToCommentStorage          The path to persist all processed input to
+     *                                      useful for rebuilding the data or changing chainlength etc
      */
     constructor(
         readonly apiKey: string,
         readonly pathToMapStorage: string,
+        readonly pathToVideosProcessedStorage: string,
         readonly pathToCommentStorage: string,
     ) {}
 
     public async initialise() {
-        try {
-            await this.loadMapFromStorage();
-        } catch {
-            log('Unable to load map from storage. Creating fresh one');
-            this.map = createDictionaryFromInput('', CHAIN_LENGTH);
-        }
+        await this.loadDataFromStorage();
     }
 
     public generateMessage() {
@@ -98,7 +94,7 @@ export default class YoutubeMarkov {
 
         log(`Dictionary now contains ${Object.keys(this.map).length} keys`);
         log(`Dictionary KV ratio is now ${this.getKeyValueRatio()}`);
-        this.saveMapToStorage();
+        this.saveDataToStorage();
     }
 
     public getKeyCount() {
@@ -138,36 +134,51 @@ export default class YoutubeMarkov {
         return 0;
     }
 
-    private async loadMapFromStorage() {
-        const readFile = util.promisify(fs.readFile);
-        const json = await readFile(this.pathToMapStorage, {
-            encoding: 'utf8',
-        });
-
-        const data = JSON.parse(json) as ISerializedStructure;
-        this.map = data.map;
-        this.harvestedYoutubeIDs = new Set(data.harvestedYoutubeIDs);
-        log(
-            `markov file loaded from disk with [${
-                Object.keys(this.map).length
-            }] keys`,
+    private async loadDataFromStorage() {
+        // first load the IDs
+        const ids = await loadJSONFromFile<string[]>(
+            this.pathToVideosProcessedStorage,
         );
-    }
-
-    private async saveMapToStorage() {
-        // Ensure the folder exists before we create it
-        const dir = path.dirname(this.pathToMapStorage);
-        if (!fs.existsSync(dir)) {
-            fs.mkdirSync(dir);
+        if (ids !== null) {
+            this.harvestedYoutubeIDs = new Set(ids);
         }
 
-        const data: ISerializedStructure = {
-            harvestedYoutubeIDs: Array.from(this.harvestedYoutubeIDs),
-            map: this.map,
-        };
+        // next try and load the map
+        const map = await loadJSONFromFile<IMarkovMap>(this.pathToMapStorage);
+        if (map !== null) {
+            this.map = map;
 
-        const writeFile = util.promisify(fs.writeFile);
-        await writeFile(this.pathToMapStorage, JSON.stringify(data));
+            log(
+                `markov file loaded from disk with [${
+                    Object.keys(this.map).length
+                }] keys`,
+            );
+        } else {
+            // Create a fresh map
+            log(`No markov file found. Creating a fresh map`);
+            this.map = createDictionaryFromInput('', CHAIN_LENGTH);
+
+            // If the map is gone, but we have the original comments file
+            // we should use that comment file to rebuild the map!
+            const allCommentsEver = await loadFile(this.pathToCommentStorage);
+            if (allCommentsEver !== null) {
+                log(`comments file found. Populating map with input`);
+                updateDictionaryFromInput(
+                    allCommentsEver,
+                    this.map,
+                    CHAIN_LENGTH,
+                );
+                await this.saveDataToStorage();
+            }
+        }
+    }
+
+    private async saveDataToStorage() {
+        saveJSONToFile(
+            Array.from(this.harvestedYoutubeIDs),
+            this.pathToVideosProcessedStorage,
+        );
+        saveJSONToFile(this.map, this.pathToMapStorage);
         log(`Saved markov file to disk at ${this.pathToMapStorage}`);
     }
 
@@ -177,7 +188,37 @@ export default class YoutubeMarkov {
             fs.mkdirSync(dir);
         }
 
-        const appendFile = util.promisify(fs.appendFile);
         await appendFile(this.pathToCommentStorage, comments.join('\n'));
+    }
+}
+
+async function saveJSONToFile<T>(obj: T, filePath: string) {
+    const dir = path.dirname(filePath);
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
+    await writeFile(filePath, JSON.stringify(obj));
+}
+
+async function loadJSONFromFile<T>(filePath: string): Promise<T> {
+    try {
+        const json = await readFile(filePath, {
+            encoding: 'utf8',
+        });
+
+        return JSON.parse(json) as T;
+    } catch {
+        return null;
+    }
+}
+
+async function loadFile(filePath: string) {
+    try {
+        const contents = await readFile(filePath, {
+            encoding: 'utf8',
+        });
+        return contents;
+    } catch {
+        return null;
     }
 }

@@ -6,6 +6,8 @@ import YoutubeMarkov from './YoutubeMarkov';
 (async () => {
     const MARKOV_FILEPATH = './data/data.json';
     const COMMENT_STORAGE_FILEPATH = './data/comments.txt';
+    const VIDEOS_PROCESSED_FILEPATH = './data/videosProcessed.json';
+
     // As a cron style string. See https://www.npmjs.com/package/node-schedule
     // For now, once a day
     const UPDATE_INTERVAL = '0 * * *';
@@ -13,6 +15,7 @@ import YoutubeMarkov from './YoutubeMarkov';
     const markov = new YoutubeMarkov(
         process.env.YOUTUBE_API_KEY,
         MARKOV_FILEPATH,
+        VIDEOS_PROCESSED_FILEPATH,
         COMMENT_STORAGE_FILEPATH,
     );
     await markov.initialise();

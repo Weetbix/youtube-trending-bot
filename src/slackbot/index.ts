@@ -68,17 +68,14 @@ async function handleStatsMessage(client: RTMClient, message: ISlackMessage) {
         return (bytes / 1024 / 1024).toFixed(2) + ' MiB';
     }
 
-    const stats = `To become so darn smart I've looked at *${
-        json.videosProcessed
-    }* videos and read through *${json.sentencesProcessed} sentences*.
-I have *${
-        json.totalKeys
-    } keys* in my head, and on average these have *${json.KVRatio.toFixed(
-        2,
-    )} values* each.
-I'm using *${bytesToMiB(json.sizeOnDisk)}s of disk* and *${bytesToMiB(
-        json.memoryUsage,
-    )}s of RAM.*
-`;
+    const stats =
+        `To become so darn smart I've looked ` +
+        `at *${json.videosProcessed}* videos and read through ` +
+        `*${json.sentencesProcessed} sentences*.\n` +
+        `I have *${json.totalKeys} keys* in my head, and on ` +
+        `average these have *${json.KVRatio.toFixed(2)} values* each.\n` +
+        `I'm using *${bytesToMiB(json.sizeOnDisk)}s of disk* and ` +
+        `*${bytesToMiB(json.memoryUsage)}s of RAM.*`;
+
     client.sendMessage(stats, message.channel);
 }

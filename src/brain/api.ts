@@ -3,6 +3,19 @@ import YoutubeMarkov from './YoutubeMarkov';
 
 const DEFAULT_PORT = 8080;
 
+export interface IGenerateMessageRespone {
+    message: string;
+}
+
+export interface IStatsResponse {
+    KVRatio: number;
+    memoryUsage: number;
+    sentencesProcessed: number;
+    sizeOnDisk: number;
+    totalKeys: number;
+    videosProcessed: number;
+}
+
 export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
     const app = express();
 
@@ -15,7 +28,7 @@ export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
     app.get('/generateMessage', (req, res, next) => {
         res.json({
             message: markov.generateMessage(),
-        });
+        } as IGenerateMessageRespone);
     });
 
     app.get('/stats', (req, res, next) => {
@@ -26,7 +39,7 @@ export default function(markov: YoutubeMarkov, port: number = DEFAULT_PORT) {
             sizeOnDisk: markov.getSizeOnDisk(),
             totalKeys: markov.getKeyCount(),
             videosProcessed: markov.getVideosProcessed(),
-        });
+        } as IStatsResponse);
     });
 
     app.listen(port);

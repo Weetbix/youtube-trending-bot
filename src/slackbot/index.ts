@@ -2,6 +2,7 @@ import debug = require('debug');
 const log = debug('slackbot');
 
 import { RTMClient, WebClient } from '@slack/client';
+import { IGenerateMessageRespone, IStatsResponse } from '../brain/api';
 import '../util/setupEnvironment';
 
 interface ISlackMessage {
@@ -34,13 +35,50 @@ async function findBotID(): Promise<string | undefined> {
 
     const client = new RTMClient(process.env.SLACK_API_KEY);
     client.start();
-    client.on('message', (message: ISlackMessage) => {
+    client.on('message', async (message: ISlackMessage) => {
         // Skip bots
         if (message.subtype && message.subtype === 'bot_message') return;
 
         // @Mentions
-        if (message.text.indexOf(`<@${botUserId}>`) >= 0) {
-            client.sendMessage('Hello there', message.channel);
+        if (message.text) {
+            if (message.text.includes(`<@${botUserId}>`)) {
+                // Print stats if we find the word stats
+                if (message.text.includes(' stats'))
+                    return await handleStatsMessage(client, message);
+
+                // otherwise generate a message
+                return await handleNormalMessage(client, message);
+            }
         }
     });
 })();
+
+async function handleNormalMessage(client: RTMClient, message: ISlackMessage) {
+    const response = await fetch(`http://localhost:8080/generateMessage`);
+    const json = (await response.json()) as IGenerateMessageRespone;
+
+    client.sendMessage(json.message, message.channel);
+}
+
+async function handleStatsMessage(client: RTMClient, message: ISlackMessage) {
+    const response = await fetch(`http://localhost:8080/stats`);
+    const json = (await response.json()) as IStatsResponse;
+
+    function bytesToMiB(bytes: number) {
+        return (bytes / 1024 / 1024).toFixed(2) + ' MiB';
+    }
+
+    const stats = `To become so darn smart I've looked at *${
+        json.videosProcessed
+    }* videos and read through *${json.sentencesProcessed} sentences*.
+I have *${
+        json.totalKeys
+    } keys* in my head, and on average these have *${json.KVRatio.toFixed(
+        2,
+    )} values* each.
+I'm using *${bytesToMiB(json.sizeOnDisk)}s of disk* and *${bytesToMiB(
+        json.memoryUsage,
+    )}s of RAM.*
+`;
+    client.sendMessage(stats, message.channel);
+}

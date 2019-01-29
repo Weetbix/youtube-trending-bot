@@ -58,6 +58,12 @@ But I prefer dogs.`;
         ]);
     });
 
+    it('should remove quotes', () => {
+        expect(splitInputIntoMessages(`I'm doing "great" lol here'''`)).toEqual(
+            ['Im doing great lol here'],
+        );
+    });
+
     it('should include punctuation in line', () => {
         expect(splitInputIntoMessages('Oh wow, so cool!')).toEqual([
             'Oh wow, so cool!',
@@ -96,8 +102,8 @@ But I prefer dogs.`;
     });
 
     it('should unescape HTML entities back to plain text', () => {
-        const input = 'it&#39;s it&#39;s';
-        const expected = [`it's it's`];
+        const input = 'm&amp;m';
+        const expected = [`m&m`];
 
         expect(splitInputIntoMessages(input)).toEqual(expected);
     });

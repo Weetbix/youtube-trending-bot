@@ -13,6 +13,7 @@ export function splitInputIntoMessages(input: string) {
         .replace(/(<\/a>|<b>|<\/b>)/g, ' ') // Remove anchor and bold tags
         .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
         .replace(/ {2,}/g, ' ') // Remove duplicate spaces
+        .replace(/["']/g, '') // Remove quotes
         .split(/[\n\.]/) // Split based on new line or full stops
         .map(line => line.trim()) // Remove any head/tail whitespace
         .filter(line => line.length > 0); // Remove blanks

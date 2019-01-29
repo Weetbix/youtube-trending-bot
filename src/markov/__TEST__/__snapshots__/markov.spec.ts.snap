@@ -28,7 +28,7 @@ Object {
 
 exports[`createDictionaryFromInput should create the expected dictionary 1`] = `
 Object {
-  "A b": Array [
+  "a b": Array [
     "c",
     "c",
     "c",

@@ -32,6 +32,11 @@ message 3`;
         expect(splitInputIntoMessages(input)).toEqual(['cat', 'dog']);
     });
 
+    it('should change all text to lowercase', () => {
+        const input = `RnDTeAm LeAd`;
+        expect(splitInputIntoMessages(input)).toEqual([input.toLowerCase()]);
+    });
+
     it('should replace long stretches of white space with a space', () => {
         expect(
             splitInputIntoMessages(
@@ -42,33 +47,33 @@ message 3`;
 
     it('should split based on full stops, and remove them', () => {
         const input = `
-I had a cat.
-It was nice.
-But I prefer dogs.`;
+i had a cat.
+it was nice.
+but i prefer dogs.`;
 
         expect(splitInputIntoMessages(input)).toEqual([
-            'I had a cat',
-            'It was nice',
-            'But I prefer dogs',
+            'i had a cat',
+            'it was nice',
+            'but i prefer dogs',
         ]);
     });
 
     it('should split between elipsis and ignore them', () => {
-        expect(splitInputIntoMessages('Oh wow... so cool')).toEqual([
-            'Oh wow',
+        expect(splitInputIntoMessages('oh wow... so cool')).toEqual([
+            'oh wow',
             'so cool',
         ]);
     });
 
     it('should remove quotes', () => {
-        expect(splitInputIntoMessages(`I'm doing "great" lol here'''`)).toEqual(
-            ['Im doing great lol here'],
+        expect(splitInputIntoMessages(`i'm doing "great" lol here'''`)).toEqual(
+            ['im doing great lol here'],
         );
     });
 
     it('should include punctuation in line', () => {
         expect(splitInputIntoMessages('Oh wow, so cool!')).toEqual([
-            'Oh wow, so cool!',
+            'oh wow, so cool!',
         ]);
     });
 
@@ -181,18 +186,18 @@ describe('createDictionaryFromInput', () => {
 describe('updateDictionaryFromInput', () => {
     it('should update the dictionary to produce the same result as if they were already joined', () => {
         const expectedInput = `
-            A b c d!
-            A b c d
+            a b c d!
+            a b c d
 
-            A b c d d
+            a b c d d
             a b b`;
         const expectedDictionary = createDictionaryFromInput(expectedInput, 2);
 
         const input1 = `
-            A b c d!
-            A b c d`;
+            a b c d!
+            a b c d`;
         const input2 = `
-            A b c d d
+            a b c d d
             a b b`;
         const actualDictionary = createDictionaryFromInput(input1, 2);
         updateDictionaryFromInput(input2, actualDictionary, 2);

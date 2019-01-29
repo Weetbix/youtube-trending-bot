@@ -133,8 +133,8 @@ but i prefer dogs.`;
 
     it('should remove all repetitions except one if the characters are non-alpha and non-numerical', () => {
         // For when people do things like 'Omg!!!!!!!!!!!!!!
-        const input = `omg!!!!!! so expensive $$$$$$ yeah`;
-        const expected = `omg! so expensive $ yeah`;
+        const input = `omg!!!!!! so expensive $$$$$$ yeah 😍😍😍😍😍😍`;
+        const expected = `omg! so expensive $ yeah 😍`;
         expect(splitInputIntoMessages(input)).toEqual([expected]);
     });
 });

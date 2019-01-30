@@ -16,6 +16,7 @@ export interface IStatsResponse {
     totalKeys: number;
     timeOfNextUpdate: string;
     videosProcessed: number;
+    responseKeywords: number;
 }
 
 interface IJob {
@@ -45,6 +46,7 @@ export default function(
         res.json({
             KVRatio: markov.getKeyValueRatio(),
             memoryUsage: process.memoryUsage().rss,
+            responseKeywords: markov.getNumberOfResponseKeywords(),
             sentencesProcessed: markov.getSentencesProcessed(),
             sizeOnDisk: markov.getSizeOnDisk(),
             timeOfNextUpdate: moment(

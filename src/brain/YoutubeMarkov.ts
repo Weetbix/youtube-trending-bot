@@ -144,6 +144,10 @@ export default class YoutubeMarkov {
         return this.harvestedYoutubeIDs.size;
     }
 
+    public getNumberOfResponseKeywords() {
+        return this.wordToHash.size;
+    }
+
     /**
      * returns the size on disk in bytes
      */

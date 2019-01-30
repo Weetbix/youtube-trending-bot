@@ -78,6 +78,9 @@ async function handleStatsMessage(client: RTMClient, message: ISlackMessage) {
         `To become so darn smart I've looked ` +
         `at *${json.videosProcessed}* videos and read through ` +
         `*${json.sentencesProcessed} sentences*.\n` +
+        `I know *${
+            json.responseKeywords
+        } keywords* that I will respond to! \n` +
         `I have *${json.totalKeys} keys* in my head, and on ` +
         `average these have *${json.KVRatio.toFixed(2)} values* each.\n` +
         `I'm using *${bytesToMiB(json.sizeOnDisk)}s of disk* and ` +

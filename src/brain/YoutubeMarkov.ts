@@ -1,5 +1,6 @@
 import debug = require('debug');
 import fs = require('fs');
+import { sample } from 'lodash';
 import path = require('path');
 import util = require('util');
 const log = debug('brain');
@@ -27,12 +28,15 @@ const MAX_VIDEOS_PER_UPDATE = 50;
 
 const CHAIN_LENGTH = 3;
 
+const MIN_WORD_LENGTH_FOR_SEED = 5;
+
 const writeFile = util.promisify(fs.writeFile);
 const readFile = util.promisify(fs.readFile);
 const appendFile = util.promisify(fs.appendFile);
 
 export default class YoutubeMarkov {
     private map: IMarkovMap;
+    private wordToHash: Map<string, string[]>;
     private harvestedYoutubeIDs: Set<string> = new Set<string>();
 
     /**
@@ -52,7 +56,23 @@ export default class YoutubeMarkov {
         await this.loadDataFromStorage();
     }
 
-    public generateMessage() {
+    public generateMessage(replyTo?: string) {
+        // Attempt to see from the input
+        if (replyTo) {
+            const seedWord: string | undefined = sample(
+                toSeedableWords(replyTo),
+            );
+            log(`Seed word selected is: ${seedWord}`);
+
+            const seedHash = sample(this.wordToHash.get(seedWord));
+            log(`Seedhash result is: ${seedHash}`);
+
+            if (seedHash) {
+                return generateMessage(this.map, seedHash);
+            }
+        }
+
+        // otherwise just randomly reply
         return generateMessage(this.map);
     }
 
@@ -171,6 +191,7 @@ export default class YoutubeMarkov {
                 await this.saveDataToStorage();
             }
         }
+        this.wordToHash = generateWordsToHashMap(this.map);
     }
 
     private async saveDataToStorage() {
@@ -221,4 +242,43 @@ async function loadFile(filePath: string) {
     } catch {
         return null;
     }
+}
+
+/**
+ * Takes a sentence or string and returns an array of
+ * words which we will consider for seeding message generation
+ * We only consider words that are all letters, and > than some length
+ */
+function toSeedableWords(sentence: string) {
+    return sentence
+        .replace(/["']/g, '')
+        .split(/\s/g)
+        .filter(
+            word =>
+                word.length >= MIN_WORD_LENGTH_FOR_SEED &&
+                /^[a-zA-Z]+$/.test(word),
+        );
+}
+
+/**
+ * Generates a map that you can use to look up hashes
+ * that contain a word in a given markov map.
+ * Note: for now this stores the hashes again as strings.
+ * A future improvement would store references to the
+ * token arrays, and pass this to the markov functions.
+ */
+function generateWordsToHashMap(markov: IMarkovMap) {
+    const wordToHash = new Map<string, string[]>();
+    Object.keys(markov).forEach(hash => {
+        toSeedableWords(hash).forEach(word => {
+            const val = wordToHash.get(word);
+            if (val) {
+                val.push(hash);
+            } else {
+                wordToHash.set(word, [hash]);
+            }
+        });
+    });
+    log(`Generated a word=>hash map with ${wordToHash.size} entries`);
+    return wordToHash;
 }

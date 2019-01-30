@@ -37,7 +37,7 @@ export default function(
 
     app.get('/generateMessage', (req, res, next) => {
         res.json({
-            message: markov.generateMessage(),
+            message: markov.generateMessage(req.query.replyTo),
         } as IGenerateMessageRespone);
     });
 

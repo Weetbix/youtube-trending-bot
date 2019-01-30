@@ -20,7 +20,8 @@ import YoutubeMarkov from './YoutubeMarkov';
     );
     await markov.initialise();
     if (markov.getKeyCount() === 0) {
-        markov.updateMapFromYoutube();
+        // temporarily disable this while testing docker
+        // markov.updateMapFromYoutube();
     }
 
     // schedule updates

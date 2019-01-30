@@ -259,10 +259,19 @@ async function loadFile(filePath: string) {
  *  - that are entirely a-z letters
  */
 function toSeedableWords(sentence: string) {
-    const blacklist = ['think', 'about', 'going', 'making', 'please'];
+    const blacklist = [
+        'think',
+        'about',
+        'going',
+        'making',
+        'please',
+        'youre',
+        'saying',
+    ];
 
     return sentence
         .replace(/["'?]/g, '')
+        .toLocaleLowerCase()
         .split(/\s/g)
         .filter(
             word =>

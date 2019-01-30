@@ -71,6 +71,12 @@ but i prefer dogs.`;
         );
     });
 
+    it('should remove brackets', () => {
+        expect(
+            splitInputIntoMessages(`wow (so) many [ ] brackets [cat]`),
+        ).toEqual(['wow so many brackets cat']);
+    });
+
     it('should include punctuation in line', () => {
         expect(splitInputIntoMessages('Oh wow, so cool!')).toEqual([
             'oh wow, so cool!',

@@ -19,9 +19,9 @@ export function splitInputIntoMessages(input: string) {
             .replace(/<br \/>/g, `\n`) // Replace BRs with new lines
             .replace(/<a href=".*?">/g, ' ') // String anchor links
             .replace(/(<\/a>|<b>|<\/b>|<\/?i>)/g, ' ') // Remove anchor, bold and italics tags
+            .replace(/["'()\[\]]/g, '') // Remove quotes
             .replace(/\n{2,}/g, '\n') // Remove duplicate blank lines
             .replace(/ {2,}/g, ' ') // Remove duplicate spaces
-            .replace(/["']/g, '') // Remove quotes
             .split(/[\n\.]/) // Split based on new line or full stops
             .map(line => line.trim()) // Remove any head/tail whitespace
             // Remove blank lines and lines without any alpha characters

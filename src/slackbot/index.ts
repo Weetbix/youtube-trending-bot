@@ -2,6 +2,7 @@ import debug = require('debug');
 const log = debug('slackbot');
 
 import { RTMClient, WebClient } from '@slack/client';
+import program = require('commander');
 import querystring = require('querystring');
 import { IGenerateMessageRespone, IStatsResponse } from '../brain/api';
 import '../util/setupEnvironment';
@@ -26,6 +27,14 @@ async function findBotID(): Promise<string | undefined> {
     );
     return bot ? bot.id : undefined;
 }
+
+program
+    .option(
+        '--brainURL <path>',
+        'set the root URL of the API',
+        `http://localhost:8080`,
+    )
+    .parse(process.argv);
 
 (async () => {
     const botUserId = await findBotID();
@@ -56,7 +65,8 @@ async function findBotID(): Promise<string | undefined> {
 
 async function handleNormalMessage(client: RTMClient, message: ISlackMessage) {
     const url =
-        `http://localhost:8080/generateMessage?` +
+        program.brainURL +
+        `/generateMessage?` +
         querystring.stringify({
             replyTo: message.text,
         });
@@ -67,7 +77,7 @@ async function handleNormalMessage(client: RTMClient, message: ISlackMessage) {
 }
 
 async function handleStatsMessage(client: RTMClient, message: ISlackMessage) {
-    const response = await fetch(`http://localhost:8080/stats`);
+    const response = await fetch(program.brainURL + `/stats`);
     const json = (await response.json()) as IStatsResponse;
 
     function bytesToMiB(bytes: number) {

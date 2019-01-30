@@ -271,7 +271,7 @@ function toSeedableWords(sentence: string) {
 
     return sentence
         .replace(/["'?]/g, '')
-        .toLocaleLowerCase()
+        .toLowerCase()
         .split(/\s/g)
         .filter(
             word =>

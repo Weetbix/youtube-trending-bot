@@ -1,0 +1,18 @@
+version: '2'
+services:
+    brain:
+        build:
+            context: .
+            dockerfile: ./src/brain/Dockerfile
+        command: 'npm run brain:prod'
+        expose:
+            - '8080'
+        environment:
+            DEBUG: '*'
+    slackbot:
+        build:
+            context: .
+            dockerfile: ./src/slackbot/Dockerfile
+        command: 'npm run bot:prod -- --brainURL=http://brain:8080'
+        environment:
+            DEBUG: '*'

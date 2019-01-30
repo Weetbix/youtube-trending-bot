@@ -6,5 +6,6 @@
         "module": "commonjs",
         "lib": ["dom", "esnext"]
     },
-    "include": ["./src/**/*"]
+    "include": ["./src/**/*"],
+    "exclude": ["**/*.spec.ts"]
 }

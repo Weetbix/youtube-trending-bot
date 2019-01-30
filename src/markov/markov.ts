@@ -1,4 +1,5 @@
-import { unescape } from 'lodash';
+import { sample, unescape } from 'lodash';
+import { stringify } from 'querystring';
 
 export enum ControlTokens {
     END,
@@ -117,15 +118,16 @@ export function addToDictionary(
     });
 }
 
-function sample<T>(array: T[]) {
-    return array[Math.floor(Math.random() * array.length)];
-}
-
-export function generateMessage(map: IMarkovMap): string {
+/**
+ * @param map   The map to use for creating the message
+ * @param seed  The intial hash (seed) to use
+ */
+export function generateMessage(map: IMarkovMap, seed?: string): string {
     const MAX_WORD_LENGTH = 50;
 
-    // start off with a random seed from the array keys
-    let key = sample(Object.keys(map));
+    // start off with a seed from the array keys, either
+    // use provided or random
+    let key = seed ? seed : sample(Object.keys(map));
     let message = key;
 
     for (let i = 0; i < MAX_WORD_LENGTH; i++) {

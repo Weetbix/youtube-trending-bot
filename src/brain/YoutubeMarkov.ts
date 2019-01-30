@@ -247,16 +247,24 @@ async function loadFile(filePath: string) {
 /**
  * Takes a sentence or string and returns an array of
  * words which we will consider for seeding message generation
- * We only consider words that are all letters, and > than some length
+ * We only consider words:
+ *  - of a certain length
+ *  - without quotes, question marks etc
+ *  - non-common words like 'think' etc that the bot may
+ *    be asked normally
+ *  - that are entirely a-z letters
  */
 function toSeedableWords(sentence: string) {
+    const blacklist = ['think', 'about', 'going', 'making', 'please'];
+
     return sentence
-        .replace(/["']/g, '')
+        .replace(/["'?]/g, '')
         .split(/\s/g)
         .filter(
             word =>
                 word.length >= MIN_WORD_LENGTH_FOR_SEED &&
-                /^[a-zA-Z]+$/.test(word),
+                /^[a-zA-Z]+$/.test(word) &&
+                !blacklist.includes(word),
         );
 }
 

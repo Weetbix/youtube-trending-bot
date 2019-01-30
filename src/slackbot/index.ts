@@ -2,6 +2,7 @@ import debug = require('debug');
 const log = debug('slackbot');
 
 import { RTMClient, WebClient } from '@slack/client';
+import querystring = require('querystring');
 import { IGenerateMessageRespone, IStatsResponse } from '../brain/api';
 import '../util/setupEnvironment';
 
@@ -54,7 +55,12 @@ async function findBotID(): Promise<string | undefined> {
 })();
 
 async function handleNormalMessage(client: RTMClient, message: ISlackMessage) {
-    const response = await fetch(`http://localhost:8080/generateMessage`);
+    const url =
+        `http://localhost:8080/generateMessage?` +
+        querystring.stringify({
+            replyTo: message.text,
+        });
+    const response = await fetch(url);
     const json = (await response.json()) as IGenerateMessageRespone;
 
     client.sendMessage(json.message, message.channel);

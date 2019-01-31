@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import StatsBox from './StatsBox';
+import ChatBox from './ChatBox';
 
 class App extends Component {
     public render() {
@@ -12,8 +13,9 @@ class App extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col>{/* <StatsBox stats={{ KVRatio: 4 }} /> */}</Col>
-                    <Col>2 of 3</Col>
+                    <Col>
+                        <ChatBox />
+                    </Col>
                 </Row>
             </Container>
         );

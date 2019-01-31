@@ -12,9 +12,7 @@ class App extends Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col>
-                        <StatsBox stats={{ KVRatio: 4 }} />
-                    </Col>
+                    <Col>{/* <StatsBox stats={{ KVRatio: 4 }} /> */}</Col>
                     <Col>2 of 3</Col>
                 </Row>
             </Container>

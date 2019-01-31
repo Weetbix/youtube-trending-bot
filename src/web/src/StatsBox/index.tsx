@@ -32,7 +32,7 @@ const StatsBox: StatelessComponent<IStatsBoxProps> = props => {
                     <th>Value</th>
                 </tr>
             </thead>
-            <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody>
+            {/* <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody> */}
         </Table>
     );
 };

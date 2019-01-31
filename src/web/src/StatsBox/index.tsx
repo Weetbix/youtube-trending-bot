@@ -3,25 +3,27 @@ import { Table } from 'react-bootstrap';
 import { IGenerateMessageRespone, IStatsResponse } from '../../../brain/api';
 
 interface IStatsBoxProps {
-    name: string;
+    stats: IStatsResponse;
 }
 
 function tableRow(
-    property: string | undefined,
+    property: string | number | undefined,
     annotation: string,
-): JSX.Element | null {
-    if (property) {
-        return (
-            <tr>
-                <th>{annotation}</th>
-                <th>{property}</th>
-            </tr>
-        );
-    }
-    return null;
+): JSX.Element {
+    property = property ? property : '';
+    return (
+        <tr>
+            <th>{annotation}</th>
+            <th>
+                {typeof property === 'number' ? property.toFixed(2) : property}
+            </th>
+        </tr>
+    );
 }
 
 const StatsBox: StatelessComponent<IStatsBoxProps> = props => {
+    const { stats = {} } = props;
+
     return (
         <Table striped bordered hover>
             <thead>
@@ -30,7 +32,7 @@ const StatsBox: StatelessComponent<IStatsBoxProps> = props => {
                     <th>Value</th>
                 </tr>
             </thead>
-            <tbody>{tableRow(props.name, 'name here')}</tbody>
+            <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody>
         </Table>
     );
 };

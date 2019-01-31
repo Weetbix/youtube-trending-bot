@@ -13,7 +13,7 @@ class App extends Component {
                 </Row>
                 <Row>
                     <Col>
-                        <StatsBox name="cat" />
+                        <StatsBox stats={{ KVRatio: 4 }} />
                     </Col>
                     <Col>2 of 3</Col>
                 </Row>

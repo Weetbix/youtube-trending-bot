@@ -9,6 +9,9 @@ services:
             - '8080'
         environment:
             DEBUG: '*'
+        # map the ./data folder to our data volume defined below
+        volumes:
+            - brain-data:/usr/brain/data
     slackbot:
         build:
             context: .
@@ -16,3 +19,7 @@ services:
         command: 'npm run bot:prod -- --brainURL=http://brain:8080'
         environment:
             DEBUG: '*'
+
+# Create a named volume for our brain data
+volumes:
+    brain-data:

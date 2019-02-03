@@ -21,7 +21,6 @@ const ChatBox = componentFromStream<IProps>(props$ => {
     );
 
     return combineLatest(from(props$ as any), input$).pipe(
-        tap(console.log),
         map(([props, input]) => (
             <Container>
                 <div>

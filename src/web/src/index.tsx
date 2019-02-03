@@ -3,6 +3,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 
+import { Provider } from 'react-redux';
+import configureStore from './store';
+
 // Setup recompose for rxjs Observables
 import { setObservableConfig } from 'recompose';
 import { from } from 'rxjs';
@@ -12,4 +15,9 @@ setObservableConfig({
     fromESObservable: from as any,
 });
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+    <Provider store={configureStore()}>
+        <App />
+    </Provider>,
+    document.getElementById('root'),
+);

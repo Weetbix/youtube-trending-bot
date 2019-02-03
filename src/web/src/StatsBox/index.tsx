@@ -1,9 +1,9 @@
-import React, { StatelessComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Table } from 'react-bootstrap';
 import { IGenerateMessageRespone, IStatsResponse } from '../../../brain/api';
 
 interface IStatsBoxProps {
-    stats: IStatsResponse;
+    stats?: Partial<IStatsResponse>;
 }
 
 function tableRow(
@@ -21,9 +21,7 @@ function tableRow(
     );
 }
 
-const StatsBox: StatelessComponent<IStatsBoxProps> = props => {
-    const { stats = {} } = props;
-
+const StatsBox: FunctionComponent<IStatsBoxProps> = ({ stats = {} }) => {
     return (
         <Table striped bordered hover>
             <thead>
@@ -32,7 +30,7 @@ const StatsBox: StatelessComponent<IStatsBoxProps> = props => {
                     <th>Value</th>
                 </tr>
             </thead>
-            {/* <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody> */}
+            <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody>
         </Table>
     );
 };

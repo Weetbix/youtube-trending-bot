@@ -1,6 +1,4 @@
-// import { combineEpics } from 'redux-observable';
-// import statsEpic from './statsEpic';
+import { combineEpics } from 'redux-observable';
+import { fetchStatsEpic } from './fetchStatsEpic';
 
-// export default combineEpics(
-//     statsEpic,
-// );
+export default combineEpics(fetchStatsEpic);

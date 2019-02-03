@@ -1,14 +1,7 @@
-var express = require('express');
-var proxy = require('http-proxy-middleware');
+const express = require('express');
+const setupProxy = require('./src/setupProxy');
 
 var app = express();
 app.use(express.static('build'));
-app.use(
-    '/api',
-    proxy({
-        target: 'http://brain:8080',
-        pathRewrite: { '^/api': '' }, // Remove /api prefix
-        changeOrigin: true,
-    }),
-);
+setupProxy(app, true);
 app.listen(5000);

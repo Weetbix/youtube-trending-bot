@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
-import StatsBox from './StatsBox';
 import ChatBox from './ChatBox';
+import StatsBox from './StatsBox';
 
 class App extends Component {
     public render() {
@@ -13,6 +13,9 @@ class App extends Component {
                     </Col>
                 </Row>
                 <Row>
+                    <Col>
+                        <StatsBox />
+                    </Col>
                     <Col>
                         <ChatBox />
                     </Col>

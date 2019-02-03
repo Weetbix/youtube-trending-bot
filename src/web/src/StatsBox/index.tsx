@@ -7,10 +7,9 @@ interface IStatsBoxProps {
 }
 
 function tableRow(
-    property: string | number | undefined,
+    property: string | number = '-',
     annotation: string,
 ): JSX.Element {
-    property = property ? property : '';
     return (
         <tr>
             <th>{annotation}</th>

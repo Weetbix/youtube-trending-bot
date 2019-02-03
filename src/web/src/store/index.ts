@@ -9,7 +9,7 @@ type Action = ActionType<typeof actions>;
 import rootEpic from '../epics';
 import rootReducer from '../reducers';
 
-const initialState = { stats: { KVRatio: 5 } };
+const initialState = {};
 const epicMiddleware = createEpicMiddleware<Action, Action, RootState>();
 
 export default function configureStore() {

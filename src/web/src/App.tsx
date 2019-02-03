@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { Dispatch, bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
 import { ActionType } from 'typesafe-actions';
 import ChatBox from './ChatBox';
 import { RootState } from './reducers';

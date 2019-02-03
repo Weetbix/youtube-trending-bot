@@ -1,7 +1,7 @@
-import { IStatsResponse } from '../../../brain/api';
-import * as actions from '../actions/stats';
 import { stat } from 'fs';
 import { ActionType, getType } from 'typesafe-actions';
+import { IStatsResponse } from '../../../brain/api';
+import * as actions from '../actions/stats';
 
 type Action = ActionType<typeof actions>;
 

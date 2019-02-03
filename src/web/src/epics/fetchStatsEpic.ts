@@ -1,11 +1,10 @@
-import { Epic, ofType } from 'redux-observable';
-import { filter, map, pluck, switchMap } from 'rxjs/operators';
-import { ActionType, isActionOf } from 'typesafe-actions';
-import { RootState } from '../reducers';
-
+import { Epic } from 'redux-observable';
 import { ajax } from 'rxjs/ajax';
+import { filter, map, pluck, switchMap } from 'rxjs/operators';
+import { isActionOf } from 'typesafe-actions';
+import { Action, RootState } from '../constants/types';
+
 import * as actions from '../actions/stats';
-type Action = ActionType<typeof actions>;
 
 export const fetchStatsEpic: Epic<Action, Action, RootState> = (
     action$,

@@ -1,9 +1,7 @@
-import { stat } from 'fs';
-import { ActionType, getType } from 'typesafe-actions';
+import { getType } from 'typesafe-actions';
 import { IStatsResponse } from '../../../brain/api';
 import * as actions from '../actions/stats';
-
-type Action = ActionType<typeof actions>;
+import { Action } from '../constants/types';
 
 export interface IState extends Partial<IStatsResponse> {
     isFetching: boolean;

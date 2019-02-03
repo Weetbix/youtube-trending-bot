@@ -2,14 +2,12 @@ import React, { Component } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
-import { bindActionCreators, Dispatch } from 'redux';
-import { ActionType } from 'typesafe-actions';
+import { Dispatch } from 'redux';
 import ChatBox from './ChatBox';
-import { RootState } from './reducers';
+import { Action, RootState } from './constants/types';
 import StatsBox from './StatsBox';
 
-import * as actions from './actions/stats';
-type Action = ActionType<typeof actions>;
+import { fetchStats } from './actions/stats';
 
 interface IProps {
     stats: RootState['stats'];
@@ -53,7 +51,7 @@ function mapStateToProps(state: RootState) {
 
 function mapDispatchToProps(dispatch: Dispatch<Action>) {
     return {
-        fetchStats: () => dispatch(actions.fetchStats()),
+        fetchStats: () => dispatch(fetchStats()),
     };
 }
 

@@ -19,6 +19,16 @@ services:
         command: 'npm run bot:prod -- --brainURL=http://brain:8080'
         environment:
             DEBUG: '*'
+    web:
+        build:
+            # No root context here
+            context: .
+            dockerfile: ./src/web/Dockerfile
+        command: 'npm run serve'
+        ports:
+            - 5000:5000
+        environment:
+            DEBUG: '*'
 
 # Create a named volume for our brain data
 volumes:

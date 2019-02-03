@@ -10,7 +10,7 @@ interface IProps {
 }
 
 const formatURL = (inputText: string) =>
-    `/generateMessage?replyTo=${encodeURI(inputText)}`;
+    `api/generateMessage?replyTo=${encodeURI(inputText)}`;
 
 const Message = componentFromStream<IProps>(props$ => {
     const message$ = from(props$ as ObservableInput<IProps>).pipe(

@@ -1,10 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Table } from 'react-bootstrap';
-import { IGenerateMessageRespone, IStatsResponse } from '../../../brain/api';
-
-interface IStatsBoxProps {
-    stats?: Partial<IStatsResponse>;
-}
+import { IStatsResponse } from '../../../brain/api';
 
 function tableRow(
     property: string | number = '-',
@@ -20,6 +16,10 @@ function tableRow(
     );
 }
 
+interface IStatsBoxProps {
+    stats?: Partial<IStatsResponse>;
+}
+
 const StatsBox: FunctionComponent<IStatsBoxProps> = ({ stats = {} }) => {
     return (
         <Table striped bordered hover>
@@ -29,7 +29,16 @@ const StatsBox: FunctionComponent<IStatsBoxProps> = ({ stats = {} }) => {
                     <th>Value</th>
                 </tr>
             </thead>
-            <tbody>{tableRow(stats.KVRatio, 'Key value ratio')}</tbody>
+            <tbody>
+                {tableRow(stats.videosProcessed, 'Videos processed')}
+                {tableRow(stats.sentencesProcessed, 'Sentences processed')}
+                {tableRow(stats.totalKeys, 'Total keys in map')}
+                {tableRow(stats.responseKeywords, 'Number of response words')}
+                {tableRow(stats.memoryUsage, 'Memory usage')}
+                {tableRow(stats.sizeOnDisk, 'Size on disk')}
+                {tableRow(stats.KVRatio, 'Key value ratio')}
+                {tableRow(stats.timeOfNextUpdate, 'Time until next update')}
+            </tbody>
         </Table>
     );
 };

@@ -24,7 +24,6 @@ class App extends Component<IProps> {
 
         return (
             <Container>
-                {stats.isFetching ? 'FETCHING' : null}
                 <Row>
                     <Col>
                         <h1>Youtube Chat Bot</h1>

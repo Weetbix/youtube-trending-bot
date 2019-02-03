@@ -3,7 +3,7 @@ import { createEpicMiddleware } from 'redux-observable';
 
 import rootReducer from '../reducers';
 
-const initialState = {};
+const initialState = { stats: { KVRatio: 5 } };
 
 export default function configureStore() {
     return createStore(

@@ -49,5 +49,8 @@
     "bugs": {
         "url": "https://github.com/Weetbix/youtube-trending-bot/issues"
     },
-    "homepage": "https://github.com/Weetbix/youtube-trending-bot#readme"
+    "homepage": "https://github.com/Weetbix/youtube-trending-bot#readme",
+    "workspaces": [
+        "packages/*"
+    ]
 }

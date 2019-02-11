@@ -11,6 +11,7 @@
         "@types/react-redux": "^7.0.1",
         "@types/recompose": "^0.30.3",
         "bootstrap": "^4.2.1",
+        "cross-env": "^5.2.0",
         "express": "^4.16.4",
         "http-proxy-middleware": "^0.19.1",
         "prettier": "^1.16.4",
@@ -28,7 +29,7 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
+        "test": "cross-env SKIP_PREFLIGHT_CHECK=true react-scripts test",
         "eject": "react-scripts eject",
         "serve": "node serve.js"
     },

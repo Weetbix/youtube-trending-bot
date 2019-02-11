@@ -35,7 +35,7 @@
         "brain:dev": "ts-node ./src/brain/index.ts",
         "bot:prod": "node ./dist/slackbot/index.js",
         "bot:dev": "ts-node ./src/slackbot/index.ts",
-        "test": "jest",
+        "test": "jest && cd ./src/web && npm run test",
         "build": "tsc -p .",
         "watch": "tsc --watch -p ."
     },

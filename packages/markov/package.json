@@ -1,0 +1,11 @@
+{
+    "private": true,
+    "name": "@youtube-trending-box/markov",
+    "version": "0.0.0",
+    "homepage": "https://github.com/Weetbix/youtube-trending-bot/tree/master/packages/markov#readme",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Weetbix/youtube-trending-bot.git"
+    }
+}

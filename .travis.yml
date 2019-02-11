@@ -1,3 +1,9 @@
 language: node_js
 node_js:
     - 'node'
+
+# npm i the web project
+before_script:
+    - cd ./src/web
+    - npm i
+    - cd ../../

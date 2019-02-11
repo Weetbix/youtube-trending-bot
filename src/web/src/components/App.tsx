@@ -3,11 +3,11 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { connect } from 'react-redux';
 
 import { Dispatch } from 'redux';
+import { Action, RootState } from '../constants/types';
 import ChatBox from './ChatBox';
-import { Action, RootState } from './constants/types';
 import StatsBox from './StatsBox';
 
-import { fetchStats } from './actions/stats';
+import { fetchStats } from '../actions/stats';
 
 interface IProps {
     stats: RootState['stats'];

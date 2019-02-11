@@ -1,4 +1,5 @@
 {
+    "private": true,
     "name": "youtube-trending-bot",
     "version": "0.0.0",
     "description": "generate text from youtube trending comments",

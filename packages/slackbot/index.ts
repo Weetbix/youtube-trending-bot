@@ -2,10 +2,13 @@ import debug = require('debug');
 const log = debug('slackbot');
 
 import { RTMClient, WebClient } from '@slack/client';
+import {
+    IGenerateMessageRespone,
+    IStatsResponse,
+} from '@youtube-trending-bot/brain';
+import '@youtube-trending-bot/util/setupEnvironment';
 import program = require('commander');
 import querystring = require('querystring');
-import { IGenerateMessageRespone, IStatsResponse } from '../brain/api';
-import '../util/setupEnvironment';
 
 interface ISlackMessage {
     subtype?: string;

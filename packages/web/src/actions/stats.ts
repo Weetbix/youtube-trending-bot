@@ -1,5 +1,5 @@
 import { createAction } from 'typesafe-actions';
-import { IStatsResponse } from '../../../brain/api';
+import { IStatsResponse } from '@youtube-trending-bot/brain/api';
 
 export const fetchStats = createAction('FETCH_STATS', resolve => () =>
     resolve({

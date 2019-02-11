@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Table } from 'react-bootstrap';
-import { IStatsResponse } from '../../../../brain/api';
+import { IStatsResponse } from '@youtube-trending-bot/brain/api';
 
 function tableRow(
     property: string | number = '-',

@@ -1,5 +1,5 @@
+import { IStatsResponse } from '@yotube-trending-bot/brain/api';
 import { getType } from 'typesafe-actions';
-import { IStatsResponse } from '../../../brain/api';
 import * as actions from '../actions/stats';
 import { Action } from '../constants/types';
 

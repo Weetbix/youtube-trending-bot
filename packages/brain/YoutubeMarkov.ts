@@ -12,7 +12,10 @@ import {
     IMarkovMap,
     updateDictionaryFromInput,
 } from '../markov';
-import { fetchAllCommentsForVideo, fetchTrendingVideos } from '../youtube';
+import {
+    fetchAllCommentsForVideo,
+    fetchTrendingVideos,
+} from '@youtube-trending-bot/youtube';
 
 // Some constants that will help us limit how many comments we
 // are fetching per day, so we don't hit the quota limit

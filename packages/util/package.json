@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "@youtube-trending-box/util",
+    "name": "@youtube-trending-bot/util",
     "version": "0.0.0",
     "homepage": "https://github.com/Weetbix/youtube-trending-bot/tree/master/packages/util#readme",
     "license": "MIT",
@@ -9,6 +9,14 @@
         "url": "git+https://github.com/Weetbix/youtube-trending-bot.git"
     },
     "files": [
-        "setupEnvironment"
-    ]
+        "lib/*"
+    ],
+    "devDependencies": {
+        "typescript": "^3.3.3"
+    },
+    "scripts": {
+        "build": "tsc"
+    },
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts"
 }

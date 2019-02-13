@@ -17,7 +17,8 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc --watch",
-        "dev": "ts-node ./index.ts"
+        "dev": "ts-node ./src/index.ts",
+        "prod": "node ./lib/index.js"
     },
     "dependencies": {
         "typescript": "^3.3.3"

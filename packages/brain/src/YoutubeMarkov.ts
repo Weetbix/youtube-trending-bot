@@ -11,7 +11,7 @@ import {
     generateMessage,
     IMarkovMap,
     updateDictionaryFromInput,
-} from '../markov';
+} from '@youtube-trending-bot/markov';
 import {
     fetchAllCommentsForVideo,
     fetchTrendingVideos,

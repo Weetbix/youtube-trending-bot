@@ -1,7 +1,7 @@
 import '@youtube-trending-bot/util/setupEnvironment';
 import schedule = require('node-schedule');
-import api from './api';
-import YoutubeMarkov from './YoutubeMarkov';
+import api from './src/api';
+import YoutubeMarkov from './src/YoutubeMarkov';
 
 (async () => {
     const MARKOV_FILEPATH = './data/data.json';

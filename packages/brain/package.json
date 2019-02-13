@@ -8,7 +8,16 @@
         "type": "git",
         "url": "git+https://github.com/Weetbix/youtube-trending-bot.git"
     },
+    "directories": {
+        "lib": "lib"
+    },
     "files": [
-        "*.ts"
-    ]
+        "lib"
+    ],
+    "scripts": {
+        "build": "tsc"
+    },
+    "dependencies": {
+        "typescript": "^3.3.3"
+    }
 }

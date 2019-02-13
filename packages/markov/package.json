@@ -1,11 +1,19 @@
 {
     "private": true,
-    "name": "@youtube-trending-box/markov",
+    "name": "@youtube-trending-bot/markov",
     "version": "0.0.0",
     "homepage": "https://github.com/Weetbix/youtube-trending-bot/tree/master/packages/markov#readme",
     "license": "MIT",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/Weetbix/youtube-trending-bot.git"
-    }
+    },
+    "devDependencies": {
+        "typescript": "^3.3.3"
+    },
+    "scripts": {
+        "build": "tsc"
+    },
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts"
 }

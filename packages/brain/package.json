@@ -15,9 +15,13 @@
         "lib"
     ],
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "dev": "ts-node ./index.ts"
     },
     "dependencies": {
         "typescript": "^3.3.3"
+    },
+    "devDependencies": {
+        "ts-node": "^8.0.2"
     }
 }

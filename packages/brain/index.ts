@@ -1,4 +1,6 @@
-import '@youtube-trending-bot/util/setupEnvironment';
+import { setupEnvironment } from '@youtube-trending-bot/util';
+setupEnvironment();
+
 import schedule = require('node-schedule');
 import api from './src/api';
 import YoutubeMarkov from './src/YoutubeMarkov';

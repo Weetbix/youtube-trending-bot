@@ -38,8 +38,8 @@
         "bot:prod": "node ./dist/slackbot/index.js",
         "bot:dev": "ts-node ./src/slackbot/index.ts",
         "test": "jest && cd ./src/web && npm run test",
-        "build": "tsc -p .",
-        "watch": "tsc --watch -p ."
+        "build": "lerna run build --parallel",
+        "watch": "lerna run watch --parallel"
     },
     "repository": {
         "type": "git",

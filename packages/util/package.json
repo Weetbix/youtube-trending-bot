@@ -15,7 +15,8 @@
         "typescript": "^3.3.3"
     },
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "watch": "tsc --watch"
     },
     "main": "lib/index.js",
     "types": "lib/index.d.ts"

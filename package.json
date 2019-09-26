@@ -12,7 +12,7 @@
         "@types/lodash": "^4.14.120",
         "@types/moment": "^2.13.0",
         "@types/node-schedule": "^1.2.2",
-        "commander": "^2.19.0",
+        "commander": "^3.0.2",
         "debug": "^4.1.1",
         "dotenv": "^7.0.0",
         "express": "^4.16.4",
